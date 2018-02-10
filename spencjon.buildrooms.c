@@ -26,9 +26,9 @@ const int BR_MAX_NAME_SIZE = 8; //Max size of the names of each room
 
 
 struct roomConnect{
-  int con[BR_MAX_CONN] = -1; //This con array that store what rooms it is connected to
+  int con[BR_MAX_CONN] = {-1}; //This con array that store what rooms it is connected to
   int numCon = 0; //Number of connections the room has. It is updated in connectRooms()
-}
+};
 
 
 /************************************
