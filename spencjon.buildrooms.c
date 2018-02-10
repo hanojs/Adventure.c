@@ -15,7 +15,7 @@
 #include <stdlib.h> //rand
 #include <time.h> //time for srand
 #include <limits.h> // NAME_MAX for directory max name size
-#include <string.h> //std::memset
+#include <string.h> //memset
 
 //BR_ to differentiate my consts from others
 const int BR_NUM_ROOMS = 7; //number of rooms in the game
@@ -37,12 +37,12 @@ struct roomConnect{
 * …
 * ROOM TYPE: <room type>
 ************************************/
-void createRooms(char **rooms, char **names, char *directoryName){
+void createRooms(char *rooms[BR_NUM_ROOMS], char *names[BR_NUM_NAMES], char directoryName[NAME_MAX + 1]){
     int rnd, i;
     FILE *fs;
     srand((unsigned int)time(NULL)); //seed random
     int *closed; // all the rooms we've already tried
-    std::memset(closed, -1, sizeof(int) * BR_NUM_NAMES);
+    memset(closed, -1, sizeof(int) * BR_NUM_NAMES);
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Do this for as many rooms as we want created
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
@@ -124,7 +124,7 @@ void addAConnecetion( struct roomConnect *roomCon){
 * ROOM TYPE: <room type>
 ************************************/
 //Room name has already been written to the rooms
-void writeRooms(struct roomConnect *roomCon, char **rooms, char *directoryName){
+void writeRooms(struct roomConnect roomCon[BR_MAX_CONN], char *rooms[BR_NUM_ROOMS], char directoryName[NAME_MAX + 1]){
   int i, j;
   FILE *fs;
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
@@ -155,9 +155,9 @@ int main(){
     char rooms[7][9]; //The chosen room names
     char directoryName[NAME_MAX+1]; //the final dirName
 
-    struct roomConnect roomCon[BR_NUM_ROOMS];
+    struct roomConnect roomCon[7];
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Set all the connections to -1 for
-      std::memset(roomCon[i].con, -1, sizeof(int) * BR_MAX_CONN);
+      memset(roomCon[i].con, -1, sizeof(int) * BR_MAX_CONN);
       roomCon[i].numCon = 0;
     }
 
