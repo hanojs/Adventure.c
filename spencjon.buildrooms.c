@@ -15,7 +15,7 @@
 #include <stdlib.h> //rand
 #include <time.h> //time for srand
 #include <limits.h> // NAME_MAX for directory max name size
-
+#include <string.h> //std::memset
 
 //BR_ to differentiate my consts from others
 const int BR_NUM_ROOMS = 7; //number of rooms in the game
@@ -26,7 +26,7 @@ const int BR_MAX_NAME_SIZE = 8; //Max size of the names of each room
 
 
 struct roomConnect{
-  int con[]; //This con array that store what rooms it is connected to
+  int *con; //This con array that store what rooms it is connected to
   int numCon; //Number of connections the room has. It is updated in connectRooms()
 };
 
@@ -41,7 +41,8 @@ void createRooms(char **rooms, char **names, char *directoryName){
     int rnd, i;
     FILE *fs;
     srand((unsigned int)time(NULL)); //seed random
-    int closed[BR_NUM_NAMES] = {-1} ; // all the rooms we've already tried
+    int *closed; // all the rooms we've already tried
+    std::memset(closed, -1, sizeof(int) * BR_NUM_NAMES);
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Do this for as many rooms as we want created
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
@@ -68,7 +69,7 @@ int graphFull(struct roomConnect *roomCon){
 
 int connectionAlreadyExists(struct roomConnect roomA, int roomB){
   int i;
-  for(i = 0; i < BR_MAX_CONN)
+  for(i = 0; i < BR_MAX_CONN; i++)
     if(roomA.con[i] == roomB)
         return 1;
   return 0;
@@ -99,13 +100,13 @@ void addAConnecetion( struct roomConnect *roomCon){
 
   while(1){
     rndRoomA = rand()%BR_NUM_ROOMS;
-    if(roomCon[rndRoomA] < BR_MAX_CONN)
+    if(roomCon[rndRoomA].numCon < BR_MAX_CONN)
       break;
   }
 
   while(1){
     rndRoomB = rand()%BR_NUM_ROOMS;
-    if(roomCon[rndRoomB].roomCon < BR_MAX_CONN)
+    if(roomCon[rndRoomB].numCon < BR_MAX_CONN)
       if(rndRoomA != rndRoomB)
         if(!connectionAlreadyExists(roomCon[rndRoomA], rndRoomB))
           break;
@@ -150,16 +151,17 @@ int main(){
     int pid = getpid();
     int i = 0;
     FILE *fs;
-    char rooms[BR_NUM_ROOMS][BR_MAX_NAME_SIZE]; //The chosen room names
+
+    char rooms[7][9]; //The chosen room names
     char directoryName[NAME_MAX+1]; //the final dirName
 
     struct roomConnect roomCon[BR_NUM_ROOMS];
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Set all the connections to -1 for
-      memset(roomCon[i].con, -1, sizeof(int) * BR_MAX_CONN);
+      std::memset(roomCon[i].con, -1, sizeof(int) * BR_MAX_CONN);
       roomCon[i].numCon = 0;
     }
 
-    const char names[BR_NUM_NAMES][BR_MAX_NAME_SIZE + 1] = {
+    const char names[10][9] = {
                         "Lounge",
                         "Library",
                         "Dungeon",
