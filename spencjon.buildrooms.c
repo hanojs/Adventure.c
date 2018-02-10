@@ -26,8 +26,8 @@ const int BR_MAX_NAME_SIZE = 8; //Max size of the names of each room
 
 
 struct roomConnect{
-  int con[BR_MAX_CONN] = {-1}; //This con array that store what rooms it is connected to
-  int numCon = 0; //Number of connections the room has. It is updated in connectRooms()
+  int con[]; //This con array that store what rooms it is connected to
+  int numCon; //Number of connections the room has. It is updated in connectRooms()
 };
 
 
@@ -37,7 +37,7 @@ struct roomConnect{
 * …
 * ROOM TYPE: <room type>
 ************************************/
-void createRooms(char rooms[][], char names[][], char directoryName[]){
+void createRooms(char **rooms, char **names, char *directoryName){
     int rnd, i;
     FILE *fs;
     srand((unsigned int)time(NULL)); //seed random
@@ -58,7 +58,7 @@ void createRooms(char rooms[][], char names[][], char directoryName[]){
     return;
 }
 
-int graphFull(struct roomConnect roomCon[]){
+int graphFull(struct roomConnect *roomCon){
   int i;
   for(i = 0; i < BR_NUM_ROOMS; i++)
     if((roomCon[i]).numCon < BR_MIN_CONN)
@@ -74,7 +74,7 @@ int connectionAlreadyExists(struct roomConnect roomA, int roomB){
   return 0;
 }
 
-void connectRooms(struct roomConnect roomCon[], int roomA, int roomB){
+void connectRooms(struct roomConnect *roomCon, int roomA, int roomB){
   int i;
 
   for(i = 0; i < BR_MAX_CONN; i++)
@@ -94,7 +94,7 @@ void connectRooms(struct roomConnect roomCon[], int roomA, int roomB){
   return;
 }
 
-void addAConnecetion( struct roomConnect roomCon[]){
+void addAConnecetion( struct roomConnect *roomCon){
   int i, rndRoomA, rndRoomB;
 
   while(1){
@@ -123,7 +123,7 @@ void addAConnecetion( struct roomConnect roomCon[]){
 * ROOM TYPE: <room type>
 ************************************/
 //Room name has already been written to the rooms
-void writeRooms(struct roomConnect roomCon[], char rooms[][], char directoryName[]){
+void writeRooms(struct roomConnect *roomCon, char **rooms, char *directoryName){
   int i, j;
   FILE *fs;
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
@@ -152,7 +152,13 @@ int main(){
     FILE *fs;
     char rooms[BR_NUM_ROOMS][BR_MAX_NAME_SIZE]; //The chosen room names
     char directoryName[NAME_MAX+1]; //the final dirName
+
     struct roomConnect roomCon[BR_NUM_ROOMS];
+    for(i = 0; i < BR_NUM_ROOMS; i++){ //Set all the connections to -1 for
+      memset(roomCon[i].con, -1, sizeof(int) * BR_MAX_CONN);
+      roomCon[i].numCon = 0;
+    }
+
     const char names[BR_NUM_NAMES][BR_MAX_NAME_SIZE + 1] = {
                         "Lounge",
                         "Library",
