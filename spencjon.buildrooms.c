@@ -19,12 +19,12 @@
 
 //BR_ to differentiate my consts from others
 #ifndef BR_VALUES
-#define BR_NUM_ROOMS 7; //number of rooms in the game
-#define BR_NUM_NAMES 10; //number of names to choose from
-#define BR_MIN_CONN 3; //minimum number of connections per room
-#define BR_MAX_CONN 6; //maximum number of connections per room
-#define BR_MAX_NAME_SIZE 8; //Max size of the names of each room
-#define BR_DIR_MAX 250; //Normally name max is 255, so this is just limiting it for our case
+#define BR_NUM_ROOMS 7 //number of rooms in the game
+#define BR_NUM_NAMES 10 //number of names to choose from
+#define BR_MIN_CONN 3 //minimum number of connections per room
+#define BR_MAX_CONN 6 //maximum number of connections per room
+#define BR_MAX_NAME_SIZE 8 //Max size of the names of each room
+#define BR_DIR_MAX 250 //Normally name max is 255, so this is just limiting it for our case
 #endif
 
 
