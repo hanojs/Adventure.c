@@ -18,15 +18,18 @@
 #include <string.h> //memset
 
 //BR_ to differentiate my consts from others
-const int BR_NUM_ROOMS = 7; //number of rooms in the game
-const int BR_NUM_NAMES = 10; //number of names to choose from
-const int BR_MIN_CONN = 3; //minimum number of connections per room
-const int BR_MAX_CONN = 6; //maximum number of connections per room
-const int BR_MAX_NAME_SIZE = 8; //Max size of the names of each room
+##ifndef BR_VALUES
+#define BR_NUM_ROOMS 7; //number of rooms in the game
+#define BR_NUM_NAMES 10; //number of names to choose from
+#define BR_MIN_CONN 3; //minimum number of connections per room
+#define BR_MAX_CONN 6; //maximum number of connections per room
+#define BR_MAX_NAME_SIZE 8; //Max size of the names of each room
+#define BR_DIR_MAX 250; //Normally name max is 255, so this is just limiting it for our case
+#endif
 
 
 struct roomConnect{
-  int *con; //This con array that store what rooms it is connected to
+  int con[BR_MAX_CONN]; //This con array that store what rooms it is connected to
   int numCon; //Number of connections the room has. It is updated in connectRooms()
 };
 
@@ -37,7 +40,7 @@ struct roomConnect{
 * …
 * ROOM TYPE: <room type>
 ************************************/
-void createRooms(char *rooms[BR_NUM_ROOMS], char *names[BR_NUM_NAMES], char directoryName[NAME_MAX + 1]){
+void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE + 1], char directoryName[BR_DIR_MAX +1]){
     int rnd, i;
     FILE *fs;
     srand((unsigned int)time(NULL)); //seed random
@@ -59,7 +62,7 @@ void createRooms(char *rooms[BR_NUM_ROOMS], char *names[BR_NUM_NAMES], char dire
     return;
 }
 
-int graphFull(struct roomConnect *roomCon){
+int graphFull(struct roomConnect roomCon[BR_NUM_ROOMS]){
   int i;
   for(i = 0; i < BR_NUM_ROOMS; i++)
     if((roomCon[i]).numCon < BR_MIN_CONN)
@@ -75,7 +78,7 @@ int connectionAlreadyExists(struct roomConnect roomA, int roomB){
   return 0;
 }
 
-void connectRooms(struct roomConnect *roomCon, int roomA, int roomB){
+void connectRooms(struct roomConnect roomCon[BR_NUM_ROOMS], int roomA, int roomB){
   int i;
 
   for(i = 0; i < BR_MAX_CONN; i++)
@@ -95,7 +98,7 @@ void connectRooms(struct roomConnect *roomCon, int roomA, int roomB){
   return;
 }
 
-void addAConnecetion( struct roomConnect *roomCon){
+void addAConnecetion( struct roomConnect roomCon[BR_NUM_ROOMS]){
   int i, rndRoomA, rndRoomB;
 
   while(1){
@@ -124,7 +127,7 @@ void addAConnecetion( struct roomConnect *roomCon){
 * ROOM TYPE: <room type>
 ************************************/
 //Room name has already been written to the rooms
-void writeRooms(struct roomConnect roomCon[BR_MAX_CONN], char *rooms[BR_NUM_ROOMS], char directoryName[NAME_MAX + 1]){
+void writeRooms(struct roomConnect roomCon[BR_NUM_ROOMS], char *rooms[BR_MAX_NAME_SIZE + 1], char directoryName[BR_DIR_MAX + 1]){
   int i, j;
   FILE *fs;
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
@@ -152,16 +155,16 @@ int main(){
     int i = 0;
     FILE *fs;
 
-    char rooms[7][9]; //The chosen room names
-    char directoryName[NAME_MAX+1]; //the final dirName
+    char rooms[BR_NUM_ROOMS][BR_MAX_NAME_SIZE + 1]; //The chosen room names
+    char directoryName[BR_DIR_MAX+1]; //the final dirName
 
-    struct roomConnect roomCon[7];
+    struct roomConnect roomCon[BR_NUM_ROOMS];
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Set all the connections to -1 for
       memset(roomCon[i].con, -1, sizeof(int) * BR_MAX_CONN);
       roomCon[i].numCon = 0;
     }
 
-    const char names[10][9] = {
+    const char names[BR_NUM_NAMES][BR_MAX_NAME_SIZE + 1] = {
                         "Lounge",
                         "Library",
                         "Dungeon",
@@ -174,7 +177,7 @@ int main(){
                         "Webs"
                         };
 
-    snprintf(directoryName, NAME_MAX + 1, "spencjon.rooms.%d", pid); //Create the dirctory name with the process id
+    snprintf(directoryName, BR_DIR_MAX + 1, "spencjon.rooms.%d", pid); //Create the dirctory name with the process id
 
     mkdir(directoryName, 0755);
 
