@@ -52,8 +52,8 @@ void createRooms(char *rooms[][BR_MAX_NAME_SIZE + 1], char *names[][BR_MAX_NAME_
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
                 strncpy(rooms[i], names[rnd], BR_MAX_NAME_SIZE); //Copy the name to the rooms
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
-                fs = fopen( ("%s\\%s",*directoryName, rooms->[i]), "w+");
-                fprintf(fs, "ROOM NAME: %s\n", rooms->[i]); //write the file name
+                fs = fopen( ("%s\\%s",*directoryName, (*rooms)[i]), "w+");
+                fprintf(fs, "ROOM NAME: %s\n", (*rooms)[i]); //write the file name
                 fclose(fs);
                 break;
             }
@@ -65,7 +65,7 @@ void createRooms(char *rooms[][BR_MAX_NAME_SIZE + 1], char *names[][BR_MAX_NAME_
 int graphFull(struct roomConnect *roomCon[BR_NUM_ROOMS]){
   int i;
   for(i = 0; i < BR_NUM_ROOMS; i++)
-    if(roomCon->[i].numCon < BR_MIN_CONN)
+    if((*roomCon)[i].numCon < BR_MIN_CONN)
       return 0;
   return 1;
 }
@@ -82,16 +82,16 @@ void connectRooms(struct roomConnect *roomCon[BR_NUM_ROOMS], int roomA, int room
   int i;
 
   for(i = 0; i < BR_MAX_CONN; i++)
-    if(roomCon->[roomA].con[i] == -1){
-      roomCon->[roomA].con[i] = roomB;
-      roomCon->[roomA].numCon++;
+    if((*roomCon)[roomA].con[i] == -1){
+      (*roomCon)[roomA].con[i] = roomB;
+      (*roomCon)[roomA].numCon++;
       break;
     }
 
   for(i = 0; i < BR_MAX_CONN; i++)
-    if(roomCon->[roomB].con[i] == -1){
-      roomCon->[roomB].con[i] = roomA;
-      roomCon->[roomB].numCon++;
+    if((*roomCon)[roomB].con[i] == -1){
+      (*roomCon)[roomB].con[i] = roomA;
+      (*roomCon)[roomB].numCon++;
       break;
     }
 
@@ -103,15 +103,15 @@ void addAConnecetion( struct roomConnect *roomCon[BR_NUM_ROOMS]){
 
   while(1){
     rndRoomA = rand()%BR_NUM_ROOMS;
-    if(roomCon->[rndRoomA].numCon < BR_MAX_CONN)
+    if((*roomCon)[rndRoomA].numCon < BR_MAX_CONN)
       break;
   }
 
   while(1){
     rndRoomB = rand()%BR_NUM_ROOMS;
-    if(roomCon->[rndRoomB].numCon < BR_MAX_CONN)
+    if((*roomCon)[rndRoomB].numCon < BR_MAX_CONN)
       if(rndRoomA != rndRoomB)
-        if(!connectionAlreadyExists(roomCon->[rndRoomA], rndRoomB))
+        if(!connectionAlreadyExists((*roomCon)[rndRoomA], rndRoomB))
           break;
   }
 
@@ -131,10 +131,10 @@ void writeRooms(struct roomConnect *roomCon[BR_NUM_ROOMS], char *rooms[][BR_MAX_
   int i, j;
   FILE *fs;
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
-    fs = fopen( ("%s\\%s",(*directoryName), rooms->[i]), "w+");
+    fs = fopen( ("%s\\%s",(*directoryName), (*rooms)[i]), "w+");
 
     for(j = 0; j < roomCon[i].numCon; j++) //for every connection...
-      fprintf(fs, "Connection %i: %s\n", j, rooms->[roomCon->[i].con[j]]); //write the connection name
+      fprintf(fs, "Connection %i: %s\n", j, (*rooms)[(*roomCon)[i].con[j]]); //write the connection name
 
     //After the connections...
     if(i == 0)
