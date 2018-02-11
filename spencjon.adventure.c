@@ -47,19 +47,20 @@ void getNewestDirectory(char directoryName[250]){
                 { //if the directory is newer than the old one...
                     strcpy(directoryName, direntPointer->d_name);
                     latest = dirStat.st_mtime;
-                    printf("Directory name: %s \n", directoryName);
+                    printf("Directory name: %s \n", directoryaName);
                 }
             else
             {
               printf("Cant be gotten into \n");
               continue; //if it can't be gotten into..
             }
-      }
-      else
-      {
-        printf("Not a directory \n");
-        continue; //IF IT ISN'T A directory
-      }
+        }
+        else
+        {
+          printf("Not a directory \n");
+          continue; //IF IT ISN'T A directory
+        }
+    }
     closedir(directoryPointer);
     printf("Final Directory name: %s \n", directoryName);
 }
