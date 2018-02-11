@@ -181,13 +181,13 @@ int main(){
 
     mkdir(directoryName, 0755);
 
-    createRooms(rooms, names, directoryName);
+    createRooms((char **)rooms, (char **)names, directoryName);
 
     while(!graphFull(roomCon)){
       addAConnecetion(roomCon);
     }
 
-    writeRooms(roomCon, rooms, directoryName);
+    writeRooms(roomCon, (char **)rooms, directoryName);
 
     return 0;
 }
