@@ -53,7 +53,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
             rnd = rand()%BR_NUM_NAMES;
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
                 printf("Create Room %i %i\n", i, rnd);
-                destination_size = sizeof(names[rnd])
+                destination_size = sizeof(names[rnd]);
                 snprintf(rooms[i], destination_size, "%s", names[rnd]) //Copy the name to the rooms //Create own copy function for 8 words long real quick
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
                 fs = fopen( ("%s\\%s",directoryName, rooms[i]), "w+");
