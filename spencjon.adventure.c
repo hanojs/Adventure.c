@@ -43,10 +43,12 @@ void getNewestDirectory(char directoryName[250]){
 
         if ((dirStat.st_mode & S_IFDIR) != S_IFDIR){
           direntPointer = readdir(directoryPointer);
+          printf("Not a directory \n");
           continue; //IF IT ISN'T A directory
         }
         if (stat(direntPointer->d_name, &dirStat) < 0){
            direntPointer = readdir(directoryPointer);
+           printf("Cant be gotten into \n");
            continue; //if it can't be gotten into..
         }
 
