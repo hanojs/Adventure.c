@@ -55,9 +55,10 @@ void getNewestDirectory(char directoryName[250]){
             latest = dirStat.st_mtime;
         }
         direntPointer = readdir(directoryPointer);
+        printf("Directory name: %s", directoryName);
     }
     closedir(directoryPointer);
-    printf("%s", directoryName);
+    printf("Final Directory name: %s", directoryName);
 }
 
 //void readRooms(){}
