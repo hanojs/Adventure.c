@@ -46,7 +46,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
     int rnd, i;
     FILE *fs;
     srand((unsigned int)time(NULL)); //seed random
-    int closed[BR_NUM_ROOMS] = {-1,-1,-1,-1,-1,-1,-1}; // all the rooms we've already tried
+    int closed[BR_NUM_NAMES] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}; // all the rooms we've already tried
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Do this for as many rooms as we want created
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
