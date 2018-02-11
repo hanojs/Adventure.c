@@ -56,6 +56,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
                 destination_size = sizeof(names[rnd]);
                 snprintf(rooms[i], destination_size, "%s", names[rnd]); //Copy the name to the rooms //Create own copy function for 8 words long real quick
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
+                printf("Create File %i %i\n", i, rnd);
                 fs = fopen( ("%s\\%s",directoryName, rooms[i]), "w+");
                 fprintf(fs, "ROOM NAME: %s\n", rooms[i]); //write the file name
                 fclose(fs);
