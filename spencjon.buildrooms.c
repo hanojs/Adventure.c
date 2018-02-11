@@ -44,6 +44,7 @@ struct roomConnect{
 ************************************/
 void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE + 1], char directoryName[BR_DIR_MAX +1]){
     int rnd, i;
+    size_t destination_size;
     FILE *fs;
     srand((unsigned int)time(NULL)); //seed random
     int closed[BR_NUM_NAMES] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}; // all the rooms we've already tried
@@ -52,7 +53,8 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
             rnd = rand()%BR_NUM_NAMES;
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
                 printf("Create Room %i %i\n", i, rnd);
-                strncpy(rooms[i], names[rnd], BR_MAX_NAME_SIZE); //Copy the name to the rooms //Create own copy function for 8 words long real quick
+                destination_size = sizeof(names[rnd])
+                snprintf(rooms[i], destination_size, "%s", names[rnd]) //Copy the name to the rooms //Create own copy function for 8 words long real quick
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
                 fs = fopen( ("%s\\%s",directoryName, rooms[i]), "w+");
                 fprintf(fs, "ROOM NAME: %s\n", rooms[i]); //write the file name
