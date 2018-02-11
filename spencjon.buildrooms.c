@@ -139,8 +139,10 @@ void addAConnecetion( struct roomConnect roomCon[BR_NUM_ROOMS]){
 void writeRooms(struct roomConnect roomCon[BR_NUM_ROOMS], char *rooms[BR_MAX_NAME_SIZE + 1], char directoryName[BR_DIR_MAX + 1]){
   int i, j;
   FILE *fs;
+  char buff[250];
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
-    fs = fopen( ("./%s/%s",directoryName, rooms[i]), "a");
+    snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, rooms[i] );
+    fs = fopen(buff, "a");
 
     for(j = 0; j < roomCon[i].numCon; j++) //for every connection...
       fprintf(fs, "Connection %i: %s\n", j, rooms[roomCon[i].con[j]]); //write the connection name
