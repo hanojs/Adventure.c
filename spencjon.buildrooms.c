@@ -145,7 +145,7 @@ void writeRooms(struct roomConnect roomCon[BR_NUM_ROOMS], char *rooms[BR_MAX_NAM
     fs = fopen(buff, "a");
 
     for(j = 0; j < roomCon[i].numCon; j++) //for every connection...
-      fprintf(fs, "Connection %i: %s\n", j, rooms[roomCon[i].con[j]]); //write the connection name
+      fprintf(fs, "Connection %i: %s\n", (j + 1), rooms[roomCon[i].con[j]]); //write the connection name
 
     //After the connections...
     if(i == 0)
