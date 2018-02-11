@@ -40,7 +40,7 @@ struct roomConnect{
 * …
 * ROOM TYPE: <room type>
 ************************************/
-void createRooms(char *rooms[][BR_MAX_NAME_SIZE + 1], char *names[][BR_MAX_NAME_SIZE + 1], char *directoryName[BR_DIR_MAX +1]){
+void createRooms(char *rooms[BR_NUM_ROOMS][BR_MAX_NAME_SIZE + 1], char *names[BR_NUM_NAMES][BR_MAX_NAME_SIZE + 1], char *directoryName[BR_DIR_MAX +1]){
     int rnd, i;
     FILE *fs;
     srand((unsigned int)time(NULL)); //seed random
@@ -50,7 +50,7 @@ void createRooms(char *rooms[][BR_MAX_NAME_SIZE + 1], char *names[][BR_MAX_NAME_
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
-                strncpy(rooms[i], names[rnd], BR_MAX_NAME_SIZE); //Copy the name to the rooms
+                strncpy((*rooms)[i], (*names)[rnd], BR_MAX_NAME_SIZE); //Copy the name to the rooms
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
                 fs = fopen( ("%s\\%s",*directoryName, (*rooms)[i]), "w+");
                 fprintf(fs, "ROOM NAME: %s\n", (*rooms)[i]); //write the file name
@@ -133,7 +133,7 @@ void writeRooms(struct roomConnect *roomCon[BR_NUM_ROOMS], char *rooms[][BR_MAX_
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
     fs = fopen( ("%s\\%s",(*directoryName), (*rooms)[i]), "w+");
 
-    for(j = 0; j < roomCon[i].numCon; j++) //for every connection...
+    for(j = 0; j < (*roomCon[i].numCon; j++) //for every connection...
       fprintf(fs, "Connection %i: %s\n", j, (*rooms)[(*roomCon)[i].con[j]]); //write the connection name
 
     //After the connections...
