@@ -46,8 +46,9 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
     int rnd, i;
     size_t destination_size;
     FILE *fs;
-    srand((unsigned int)time(NULL)); //seed random
+    char buff[250];
     int closed[BR_NUM_NAMES] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}; // all the rooms we've already tried
+    srand((unsigned int)time(NULL)); //seed random
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Do this for as many rooms as we want created
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
@@ -57,9 +58,10 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
                 printf("Roms[i] Size: %i   Names[rnd] %s Size: %i \n    Max Name Size: %i \n", destination_size, names[rnd], sizeof(names[rnd]), BR_MAX_NAME_SIZE);
                 rooms[i] = names[rnd]; //Copy the name to the rooms //Create own copy function for 8 words long real quick
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
-                printf("Create File %s %s %i %i\n",directoryName, rooms[i], i, rnd);
+                snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, rooms[i] );
+                printf("Create File %s %i %i\n", buff, i, rnd);
 
-                fs = fopen( ("./%s/%s",directoryName, rooms[i]), "w+");
+                fs = fopen( buff, "w+");
                 fprintf(fs, "ROOM NAME: %s\n", rooms[i]); //write the file name
                 fclose(fs);
                 break;
