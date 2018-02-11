@@ -161,8 +161,8 @@ int main(){
     int i = 0;
     FILE *fs;
 
-    char rooms[BR_NUM_ROOMS][BR_MAX_NAME_SIZE + 1]; //The chosen room names
-    char directoryName[BR_DIR_MAX+1]; //the final dirName
+    char rooms[BR_NUM_ROOMS][(BR_MAX_NAME_SIZE + 1)]; //The chosen room names
+    char directoryName[(BR_DIR_MAX+1)]; //the final dirName
 
     struct roomConnect roomCon[BR_NUM_ROOMS];
     for(i = 0; i < BR_NUM_ROOMS; i++){ //Set all the connections to -1 for
@@ -170,7 +170,7 @@ int main(){
       roomCon[i].numCon = 0;
     }
 
-    const char names[BR_NUM_NAMES][BR_MAX_NAME_SIZE + 1] = {
+    const char names[BR_NUM_NAMES][(BR_MAX_NAME_SIZE + 1)] = {
                         "Lounge",
                         "Library",
                         "Dungeon",
