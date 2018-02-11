@@ -26,7 +26,6 @@
 #define BR_MIN_CONN 3 //minimum number of connections per room
 #define BR_MAX_CONN 6 //maximum number of connections per room
 #define BR_MAX_NAME_SIZE 8 //Max size of the names of each room
-#define BR_MAX_NAME_SIZE_P1 9 //max name +1 for array initialization -- Dynamically doing this does not work in c89
 #define BR_DIR_MAX 250 //Normally name max is 255, so this is just limiting it for our case
 #endif
 
@@ -162,7 +161,7 @@ int main(){
     int i = 0;
     FILE *fs;
 
-    char rooms[BR_NUM_ROOMS][(BR_MAX_NAME_SIZE_P1)]; //The chosen room names
+    char rooms[BR_NUM_ROOMS][(BR_MAX_NAME_SIZE + 2)]; //The chosen room names
     char directoryName[(BR_DIR_MAX+1)]; //the final dirName
 
     struct roomConnect roomCon[BR_NUM_ROOMS];
@@ -171,7 +170,7 @@ int main(){
       roomCon[i].numCon = 0;
     }
 
-    const char names[BR_NUM_NAMES][(BR_MAX_NAME_SIZE_P1)] = {
+    const char names[BR_NUM_NAMES][(BR_MAX_NAME_SIZE + 1)] = {
                         "Lounge",
                         "Library",
                         "Dungeon",
