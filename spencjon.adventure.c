@@ -47,7 +47,7 @@ void getNewestDirectory(char directoryName[250]){
                 { //if the directory is newer than the old one...
                     strcpy(directoryName, direntPointer->d_name);
                     latest = dirStat.st_mtime;
-                    printf("Directory name: %s \n", directoryaName);
+                    printf("Directory name: %s \n", directoryName);
                 }
             else
             {
