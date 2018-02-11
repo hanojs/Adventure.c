@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <string.h> //memset strcpy
 
 
 #ifndef AD_VALUES
