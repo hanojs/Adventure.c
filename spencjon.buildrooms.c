@@ -58,7 +58,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
                 rooms[i] = names[rnd]; //Copy the name to the rooms //Create own copy function for 8 words long real quick
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
                 printf("Create File %i %i\n", i, rnd);
-                fs = fopen( ("%s/%s",directoryName, rooms[i]), "w+");
+                fs = fopen( ("/%s/%s",directoryName, rooms[i]), "w+");
                 fprintf(fs, "ROOM NAME: %s\n", rooms[i]); //write the file name
                 fclose(fs);
                 break;
@@ -137,7 +137,7 @@ void writeRooms(struct roomConnect roomCon[BR_NUM_ROOMS], char *rooms[BR_MAX_NAM
   int i, j;
   FILE *fs;
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
-    fs = fopen( ("%s\\%s",directoryName, rooms[i]), "a");
+    fs = fopen( ("/%s/%s",directoryName, rooms[i]), "a");
 
     for(j = 0; j < roomCon[i].numCon; j++) //for every connection...
       fprintf(fs, "Connection %i: %s\n", j, rooms[roomCon[i].con[j]]); //write the connection name
