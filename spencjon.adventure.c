@@ -38,16 +38,15 @@ void getNewestDirectory(char directoryName[250]){
     struct dirent *direntPointer;
     time_t latest = 0;
     direntPointer = readdir(directoryPointer);
-    while (direntPointer != NULL) { //while there are more directories
+    while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
         memset(&dirStat, 0, sizeof(dirStat)); //allocate the memorY
 
-        if ((dirStat.st_mode & S_IFDIR) != S_IFDIR){
-          direntPointer = readdir(directoryPointer);
+        if (!S_ISDIR(direntPointer.st_mode)){
           printf("Not a directory \n");
           continue; //IF IT ISN'T A directory
         }
+
         if (stat(direntPointer->d_name, &dirStat) < 0){
-           direntPointer = readdir(directoryPointer);
            printf("Cant be gotten into \n");
            continue; //if it can't be gotten into..
         }
@@ -56,6 +55,7 @@ void getNewestDirectory(char directoryName[250]){
             strcpy(directoryName, direntPointer->d_name);
             latest = dirStat.st_mtime;
         }
+
         direntPointer = readdir(directoryPointer);
         printf("Directory name: %s \n", directoryName);
     }
@@ -64,13 +64,6 @@ void getNewestDirectory(char directoryName[250]){
 }
 
 //void readRooms(){}
-
-
-
-
-
-
-
 
 int main(){
   char directoryName[250];
