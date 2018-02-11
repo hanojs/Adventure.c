@@ -170,7 +170,7 @@ int main(){
       roomCon[i].numCon = 0;
     }
 
-    const char **names = {"Lounge", "Library", "Dungeon", "Bed", "Cave", "Box", "HotTub", "Cannery", "Stable", "Webs"}; 
+    const char *names[10] = {"Lounge", "Library", "Dungeon", "Bed", "Cave", "Box", "HotTub", "Cannery", "Stable", "Webs"}; 
 
     snprintf(directoryName, BR_DIR_MAX + 1, "spencjon.rooms.%d", pid); //Create the dirctory name with the process id
 
