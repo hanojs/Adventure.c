@@ -107,16 +107,18 @@ void connectRooms(struct roomConnect roomCon[BR_NUM_ROOMS], int roomA, int roomB
   return;
 }
 
+
+//Adds one random connection
 void addAConnecetion( struct roomConnect roomCon[BR_NUM_ROOMS]){
   int i, rndRoomA, rndRoomB;
 
-  while(1){
+  while(1){ //find a room that we can add another connection to
     rndRoomA = rand()%BR_NUM_ROOMS;
     if(roomCon[rndRoomA].numCon < BR_MAX_CONN)
       break;
   }
 
-  while(1){
+  while(1){ //find a different room, not previously connected to the first room, that can have another connection
     rndRoomB = rand()%BR_NUM_ROOMS;
     if(roomCon[rndRoomB].numCon < BR_MAX_CONN)
       if(rndRoomA != rndRoomB)
@@ -124,7 +126,7 @@ void addAConnecetion( struct roomConnect roomCon[BR_NUM_ROOMS]){
           break;
   }
 
-  connectRooms(roomCon, rndRoomA, rndRoomB);
+  connectRooms(roomCon, rndRoomA, rndRoomB); //join the two rooms
 
   return;
 }
@@ -139,13 +141,13 @@ void addAConnecetion( struct roomConnect roomCon[BR_NUM_ROOMS]){
 void writeRooms(struct roomConnect roomCon[BR_NUM_ROOMS], char *rooms[BR_MAX_NAME_SIZE + 1], char directoryName[BR_DIR_MAX + 1]){
   int i, j;
   FILE *fs;
-  char buff[250];
+  char buff[250]; //buff so we can fopen a file in another directory
   for(i = 0; i < BR_NUM_ROOMS; i++){ //Go through each room
-    snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, rooms[i] );
+    snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, rooms[i] ); //writes the file path to buff so we can open it
     fs = fopen(buff, "a");
 
     for(j = 0; j < roomCon[i].numCon; j++) //for every connection...
-      fprintf(fs, "Connection %i: %s\n", (j + 1), rooms[roomCon[i].con[j]]); //write the connection name
+      fprintf(fs, "Connection %i: %s\n", (j + 1), rooms[roomCon[i].con[j]]); //write the connection name (connection: 1-6 instead of 0-5)
 
     //After the connections...
     if(i == 0)
@@ -162,7 +164,7 @@ void writeRooms(struct roomConnect roomCon[BR_NUM_ROOMS], char *rooms[BR_MAX_NAM
 
 
 int main(){
-    int pid = getpid();
+    int pid = getpid(); //gets the process id for
     int i = 0;
     FILE *fs;
 
@@ -175,19 +177,18 @@ int main(){
       roomCon[i].numCon = 0;
     }
 
-    const char *names[BR_NUM_NAMES] = {"Lounge", "Library", "Dungeon", "Bed", "Cave", "Box", "HotTub", "Cannery", "Stable", "Webs"};
+    const char *names[BR_NUM_NAMES] = {"Lounge", "Library", "Dungeon", "Bed", "Cave", "Box", "HotTub", "Cannery", "Stable", "Webs"}; //this has to be updated whenever numNames changes
 
     snprintf(directoryName, BR_DIR_MAX + 1, "spencjon.rooms.%d", pid); //Create the dirctory name with the process id
-
     mkdir(directoryName, 0755);
 
-    createRooms((char **)rooms, (char **)names, directoryName);
+    createRooms((char **)rooms, (char **)names, directoryName); //initializes the rooms with their names and places them in the directory made earlier
 
-    while(!graphFull(roomCon)){
-      addAConnecetion(roomCon);
+    while(!graphFull(roomCon)){ //until all rooms have at least 3 connections...
+      addAConnecetion(roomCon); //add another connection
     }
 
-    writeRooms(roomCon, (char **)rooms, directoryName);
+    writeRooms(roomCon, (char **)rooms, directoryName); //writes the connections and room types to the room files in the directory
 
     return 0;
 }
