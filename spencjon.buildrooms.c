@@ -53,10 +53,15 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
                 printf("Create Room %i\n", i);
                 strncpy(rooms[i], names[rnd], BR_MAX_NAME_SIZE); //Copy the name to the rooms
+                printf("Create Room %i\n", i);
+
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
+                printf("Create Room %i\n", i);
+
                 fs = fopen( ("%s\\%s",directoryName, rooms[i]), "w+");
                 fprintf(fs, "ROOM NAME: %s\n", rooms[i]); //write the file name
                 fclose(fs);
+                printf("Create Room %i\n", i);
                 break;
             }
         }
