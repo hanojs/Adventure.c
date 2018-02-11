@@ -8,6 +8,8 @@
 *   and all the room connections will be two-ways
 *************************************/
 
+//Debug statements https://stackoverflow.com/questions/1644868/c-define-macro-for-debug-printing
+
 
 #include <stdio.h> // file stuffs
 #include <sys/types.h> // pid
@@ -50,6 +52,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
+                printf("Create Room %i\n", i);
                 strncpy(rooms[i], names[rnd], BR_MAX_NAME_SIZE); //Copy the name to the rooms
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
                 fs = fopen( ("%s\\%s",directoryName, rooms[i]), "w+");
