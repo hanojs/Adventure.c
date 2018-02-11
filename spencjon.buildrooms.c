@@ -161,7 +161,7 @@ int main(){
     int i = 0;
     FILE *fs;
 
-    char rooms[BR_NUM_ROOMS][(BR_MAX_NAME_SIZE + 2)]; //The chosen room names
+    char *rooms[BR_NUM_ROOMS]; //The chosen room names
     char directoryName[(BR_DIR_MAX+1)]; //the final dirName
 
     struct roomConnect roomCon[BR_NUM_ROOMS];
@@ -170,7 +170,7 @@ int main(){
       roomCon[i].numCon = 0;
     }
 
-    const char *names[10] = {"Lounge", "Library", "Dungeon", "Bed", "Cave", "Box", "HotTub", "Cannery", "Stable", "Webs"}; 
+    const char *names[BR_NUM_NAMES] = {"Lounge", "Library", "Dungeon", "Bed", "Cave", "Box", "HotTub", "Cannery", "Stable", "Webs"};
 
     snprintf(directoryName, BR_DIR_MAX + 1, "spencjon.rooms.%d", pid); //Create the dirctory name with the process id
 
