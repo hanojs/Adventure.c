@@ -57,7 +57,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
                 printf("Roms[i] Size: %i   Names[rnd] %s Size: %i \n    Max Name Size: %i \n", destination_size, names[rnd], sizeof(names[rnd]), BR_MAX_NAME_SIZE);
                 rooms[i] = names[rnd]; //Copy the name to the rooms //Create own copy function for 8 words long real quick
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
-                printf("Create File %i %i\n", i, rnd);
+                printf("Create File %s %s %i %i\n",directoryName, rooms[i], i, rnd);
                 fs = fopen( ("/%s/%s",directoryName, rooms[i]), "w+");
                 fprintf(fs, "ROOM NAME: %s\n", rooms[i]); //write the file name
                 fclose(fs);
