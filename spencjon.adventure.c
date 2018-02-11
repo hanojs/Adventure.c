@@ -30,57 +30,76 @@ struct path {
   int pathLength;
 };
 
-
-
 void getNewestDirectory(char directoryName[250]){
     DIR *directoryPointer = opendir(".");
     struct stat dirStat;
     struct dirent *direntPointer;
     time_t latest = 0;
-    direntPointer = readdir(directoryPointer);
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
         memset(&dirStat, 0, sizeof(dirStat)); //allocate the memorY
 
         if (!(stat(direntPointer->d_name, &dirStat) < 0))
-            if (S_ISDIR(dirStat.st_mode)){
+            if (S_ISDIR(dirStat.st_mode))
                 if (dirStat.st_mtime > latest)
                 { //if the directory is newer than the old one...
                     strcpy(directoryName, direntPointer->d_name);
                     latest = dirStat.st_mtime;
-                    printf("Directory name: %s \n", directoryName);
                 }
             else
-            {
-              printf("Cant be gotten into \n");
-              continue; //if it can't be gotten into..
-            }
-        }
+                continue; //if it can't be gotten into..
         else
-        {
-          printf("Not a directory \n");
-          continue; //IF IT ISN'T A directory
-        }
+            continue; //IF IT ISN'T A directory
     }
     closedir(directoryPointer);
-    printf("Final Directory name: %s \n", directoryName);
 }
 
-//void readRooms(){}
+void storeRoom(FILE *fs, struct room *rooms, int roomNum){
+    int i = 0;
+    char buff[255];
+    char name[20];
+
+    //Read/store the room name
+    fgets(buff, sizeof(buff), fs);
+    memcpy(rooms[roomNum].roomName, &buffer[12], sizeof(rooms[roomNum].roomName));
+
+    //Read/Store all the connections. The last fget will read the room type
+    fgets(buff, sizeof(buff), fs);
+    while(buff[0] == 'C'){
+      memcpy(rooms[roomNum].connections[i], &buffer[15], sizeof(rooms[roomNum].connections[i]));
+      i++;
+      fgets(buff, sizeof(buff), fs);
+    }
+
+    //store the roomType
+    memcpy(rooms[roomNum].roomType, &buffer[12], sizeof(rooms[roomNum].roomType));
+
+    return;
+}
+
+void readRooms(char directoryName[250], struct room *rooms){
+    int i = 0;
+    char buff[250];
+    DIR *directoryPointer = opendir(directoryName);
+    FILE *fs;
+    while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
+        snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
+        fs = fopen(buff, "r");
+        storeRoom(fs, rooms, i);
+        i++;
+        fclose(fs);
+    }
+    closedir(directoryPointer);
+    return;
+}
 
 int main(){
   char directoryName[250];
-  struct room *rooms;
+  struct room rooms[AD_NUM_ROOMS];
   struct path pathList;
 
   //path = malloc(sizeof(char*) * pathLength);  //We will use this
-
-
-
   getNewestDirectory(directoryName);
-  //readRooms(directoryName, (struct room *)rooms);
-  printf("%s", directoryName);
-
-
+  readRooms(directoryName, (struct room *)rooms);
 
   return 0;
 }

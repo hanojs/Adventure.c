@@ -53,13 +53,13 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
-                printf("Create Room %i %i\n", i, rnd);
+                //printf("Create Room %i %i\n", i, rnd);
                 destination_size = sizeof(rooms[i]);
-                printf("Roms[i] Size: %i   Names[rnd] %s Size: %i \n    Max Name Size: %i \n", destination_size, names[rnd], sizeof(names[rnd]), BR_MAX_NAME_SIZE);
+                //printf("Roms[i] Size: %i   Names[rnd] %s Size: %i \n    Max Name Size: %i \n", destination_size, names[rnd], sizeof(names[rnd]), BR_MAX_NAME_SIZE);
                 rooms[i] = names[rnd]; //Copy the name to the rooms //Create own copy function for 8 words long real quick
                 closed[rnd] = 0; //Set the closed flag so we know we have used it
                 snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, rooms[i] );
-                printf("Create File %s %i %i\n", buff, i, rnd);
+                //printf("Create File %s %i %i\n", buff, i, rnd);
 
                 fs = fopen( buff, "w+");
                 fprintf(fs, "ROOM NAME: %s\n", rooms[i]); //write the file name
