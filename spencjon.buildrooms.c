@@ -51,7 +51,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
         while(1){ //until we find a suitable room name...
             rnd = rand()%BR_NUM_NAMES;
             if(closed[rnd] == -1){ //if the name hasn't been chosen yet
-                printf("Create Room %i\n", i);
+                printf("Create Room %i %i\n", i, rnd);
                 strncpy(rooms[i], names[rnd], BR_MAX_NAME_SIZE); //Copy the name to the rooms
                 printf("Create Room %i\n", i);
 
