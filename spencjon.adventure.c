@@ -10,7 +10,7 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <string.h> //memset strcpy
-
+#include <stdlib.h> //malloc
 
 #ifndef AD_VALUES
 #define AD_NUM_ROOMS 7
