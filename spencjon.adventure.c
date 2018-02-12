@@ -31,7 +31,7 @@ struct path {
 };
 
 void getNewestDirectory(char directoryName[250]){
-    char blackListDir[] = '.';
+    char blackListDir[5] = '.';
     DIR *directoryPointer = opendir(".");
     struct dirent *direntPointer;
     struct stat dirStat;
