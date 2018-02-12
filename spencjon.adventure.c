@@ -59,7 +59,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     char *name = malloc(20 * sizeof(char));
     size_t nSize = sizeof(buff);
     //Read/store the room name
-    getline(buff, &nsize, fs);
+    getline(buff, &nSize, fs);
     printf("ROOM NAME %s \n", &buff[12]);
     //memcpy(rooms[roomNum].roomName, &buff[12], sizeof(rooms[roomNum].roomName));
 
