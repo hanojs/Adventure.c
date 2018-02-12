@@ -50,7 +50,7 @@ void getNewestDirectory(char directoryName[250]){
                         strcpy(directoryName, direntPointer->d_name);
                         latest = dirStat.st_mtime;
                         printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
-                    }
+                    } //if statements are not stacked well. 
     }
 
     printf("Get newestLast %s\n", directoryName);
