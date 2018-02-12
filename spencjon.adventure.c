@@ -23,7 +23,7 @@
 struct room {
   char roomName[AD_NAME_INITIAL];
   char roomType[20];
-  int connections[AD_MAX_CONN];
+  char connections[AD_MAX_CONN][AD_NAME_INITIAL];
 };
 struct path {
   char **path;
