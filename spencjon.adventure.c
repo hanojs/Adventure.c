@@ -52,30 +52,38 @@ void getNewestDirectory(char directoryName[250]){
     }
     closedir(directoryPointer);
 }
-
+int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
+  fgets(buff, nSize, fs);
+  printf("Get File Line: %s DONE", buff);
+  while(*buff){
+    if(*buff=='\n')
+      *buff=='\0';
+    buff++;
+  }
+}
 void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     int i = 0;
     char *buff = malloc(100 * sizeof(char));
     char *name = malloc(20 * sizeof(char));
     size_t nSize = sizeof(buff);
     //Read/store the room name
-    getline(buff, &nSize, fs);
-    printf("ROOM NAME %s \n", &buff[12]);
+
+    //printf("ROOM NAME %s \n", &buff[12]);
     //memcpy(rooms[roomNum].roomName, &buff[12], sizeof(rooms[roomNum].roomName));
 
 
     //Read/Store all the connections. The last fget will read the room type
-    getline(buff, &nSize, fs);
-    printf("CONNECTION %s\n", &buff[15]);
-    while(buff[0] == 'C'){
+    //fgets(buff, nSize, fs);
+    //printf("CONNECTION %s\n", &buff[15]);
+    while(getFileLine(buff, nSize, fs)){
       //memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
       i++;
-      getline(buff, sizeof(buff), fs);
-      printf("ROOM TYPE %s\n", &buff[12]);
+      //fgets(buff, nSize, fs);
+      printf("ROOM TYPE %s\n", buff);
     }
 
     //store the roomType
-    memcpy(rooms[roomNum].roomType, &buff[12], sizeof(rooms[roomNum].roomType));
+    //memcpy(rooms[roomNum].roomType, &buff[12], sizeof(rooms[roomNum].roomType));
 
     return;
 }
