@@ -54,7 +54,7 @@ void getNewestDirectory(char directoryName[250]){
 }
 int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
   fgets(buff, nSize, fs);
-  printf("Get File Line: %s DONE", buff);
+  printf("Get File Line: %s DONE\n", buff);
   while(*buff){
     if(*buff=='\n')
       *buff=='\0';
@@ -95,10 +95,11 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
 void readRooms(char directoryName[250], struct room *rooms){
     int i = 0;
     char buff[250];
+
     DIR *directoryPointer = opendir(directoryName);
     FILE *fs;
     struct dirent *direntPointer;
-
+    printf("Directory Name: %s\n", directoryName);
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
         fs = fopen(buff, "r");
