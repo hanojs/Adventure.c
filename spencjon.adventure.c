@@ -44,12 +44,14 @@ void getNewestDirectory(char directoryName[250]){
                 { //if the directory is newer than the old one...
                     strcpy(directoryName, direntPointer->d_name);
                     latest = dirStat.st_mtime;
+                    printf("Get newest 123 %s\n", directoryName);
                 }
             else
                 continue; //if it can't be gotten into..
         else
             continue; //IF IT ISN'T A directory
     }
+    printf("Get newestLast %s\n", directoryName);
     closedir(directoryPointer);
 }
 int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
