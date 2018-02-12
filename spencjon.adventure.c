@@ -62,7 +62,7 @@ int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
   }
   if(!(buff[0]))
     return 0;
-  return 1; 
+  return 1;
 }
 void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     int i = 0;
@@ -77,7 +77,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
 
     //Read/Store all the connections. The last fget will read the room type
     //fgets(buff, nSize, fs);
-    getFileLine(buff, nSize, 12, fs)
+    getFileLine(buff, nSize, 12, fs);
     //printf("CONNECTION %s\n", &buff[15]);
     while(getFileLine(buff, nSize, 15, fs)){
       //memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
