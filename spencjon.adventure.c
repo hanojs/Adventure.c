@@ -38,7 +38,7 @@ void getNewestDirectory(char directoryName[250]){
     time_t latest = 0;
 
     blackListDir[0] = '.';
-    blackListDir[1] = '\0'
+    blackListDir[1] = '\0';
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
         memset(&dirStat, 0, sizeof(dirStat));                     //allocate the memorY
         printf("dir Name : %s Done \n", direntPointer->d_name);
