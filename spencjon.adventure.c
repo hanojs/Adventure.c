@@ -13,10 +13,10 @@
 #include <stdlib.h> //malloc
 
 #ifndef AD_VALUES
-#define AD_NUM_ROOMS 7
-#define AD_MIN_CONN 3
-#define AD_MAX_CONN 6
-#define AD_NAME_INITIAL 9
+  #define AD_NUM_ROOMS 7
+  #define AD_MIN_CONN 3
+  #define AD_MAX_CONN 6
+  #define AD_NAME_INITIAL 9
 #endif
 
 
@@ -36,36 +36,44 @@ void getNewestDirectory(char directoryName[250]){
     struct dirent *direntPointer;
     time_t latest = 0;
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
-        memset(&dirStat, 0, sizeof(dirStat)); //allocate the memorY
+        memset(&dirStat, 0, sizeof(dirStat));                     //allocate the memorY
 
         if (!(stat(direntPointer->d_name, &dirStat) < 0))
             if (S_ISDIR(dirStat.st_mode))
                 if (dirStat.st_mtime > latest)
-                { //if the directory is newer than the old one...
+                {                                                 //if the directory is newer than the old one...
                     strcpy(directoryName, direntPointer->d_name);
                     latest = dirStat.st_mtime;
-                    printf("Get newest 123 %s\n", directoryName);
+                    printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
                 }
             else
-                continue; //if it can't be gotten into..
+                continue;                                          //if it can't be gotten into..
         else
-            continue; //IF IT ISN'T A directory
+            continue;                                              //IF IT ISN'T A directory
     }
     printf("Get newestLast %s\n", directoryName);
     closedir(directoryPointer);
 }
+
 int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
+  char *tmp = buff;
   fgets(buff, nSize, fs);
   printf("Get File Line: %s DONE\n", buff);
-  while(*buff){
-    if(*buff=='\n')
-      *buff=='\0';
-    buff++;
+
+
+  while(*tmp){
+    if(*tmp=='\n')
+      *tmp='\0';
+    tmp++;
   }
+
   if(!(buff[0]))
     return 0;
   return 1;
 }
+
+
+
 void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     int i = 0;
     char *buff = malloc(100 * sizeof(char));
