@@ -31,11 +31,11 @@ struct path {
 };
 
 void getNewestDirectory(char directoryName[250]){
-    DIR     *directoryPointer = opendir(".");
-    struct  dirent *direntPointer;
-    struct  stat dirStat;
-    time_t  latest = 0;
-    char    currentDir[] = '.';
+    DIR *directoryPointer = opendir(".");
+    struct dirent *direntPointer;
+    struct stat dirStat;
+    time_t latest = 0;
+    char currentDir[] = '.';
 
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
         memset(&dirStat, 0, sizeof(dirStat));                     //allocate the memorY
