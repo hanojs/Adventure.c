@@ -60,15 +60,17 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
 
     //Read/store the room name
     fgets(buff, sizeof(buff), fs);
-
+    printf("%s", buff);
     memcpy(rooms[roomNum].roomName, &buff[12], sizeof(rooms[roomNum].roomName));
 
     //Read/Store all the connections. The last fget will read the room type
     fgets(buff, sizeof(buff), fs);
+    printf("%s", buff);
     while(buff[0] == 'C'){
       memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
       i++;
       fgets(buff, sizeof(buff), fs);
+      printf("%s", buff);
     }
 
     //store the roomType
