@@ -129,7 +129,7 @@ int main(){
   //path = malloc(sizeof(char*) * pathLength);  //We will use this
   getNewestDirectory(directoryName);
   printf("Main Dir Name %s\n", directoryName);
-  readRooms(directoryName, (struct room *)rooms);
+  //readRooms(directoryName, (struct room *)rooms);
 
   return 0;
 }
