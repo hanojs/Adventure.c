@@ -32,8 +32,8 @@ struct path {
 
 void getNewestDirectory(char directoryName[250]){
     DIR *directoryPointer = opendir(".");
-    struct stat dirStat;
     struct dirent *direntPointer;
+    struct stat dirStat;
     time_t latest = 0;
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
         memset(&dirStat, 0, sizeof(dirStat));                     //allocate the memorY
@@ -41,15 +41,14 @@ void getNewestDirectory(char directoryName[250]){
         if (!(stat(direntPointer->d_name, &dirStat) < 0))
             if (S_ISDIR(dirStat.st_mode))
                 if (dirStat.st_mtime > latest)
-                {                                                 //if the directory is newer than the old one...
-                    strcpy(directoryName, direntPointer->d_name);
-                    latest = dirStat.st_mtime;
-                    printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
-                }
-            else
-                continue;                                          //if it can't be gotten into..
-        else
-            continue;                                              //IF IT ISN'T A directory
+                    if(direntPointer->d_name !='.')
+                    {                                                 //if the directory is newer than the old one...
+                        strcpy(directoryName, direntPointer->d_name);
+                        latest = dirStat.st_mtime;
+                        printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
+                    }
+                                                                  //if it can't be gotten into..
+                                                                  //IF it isn't A directory we continue
     }
     printf("Get newestLast %s\n", directoryName);
     closedir(directoryPointer);
