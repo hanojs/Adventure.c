@@ -55,8 +55,8 @@ void getNewestDirectory(char directoryName[250]){
 
 void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     int i = 0;
-    char buff[255];
-    char name[20];
+    char *buff = malloc(100 * sizeof(char));
+    char name = malloc(20 * sizeof(char));
 
     //Read/store the room name
     getline(buff, sizeof(buff), fs);
