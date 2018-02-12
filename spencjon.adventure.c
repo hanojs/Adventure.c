@@ -42,9 +42,9 @@ void getNewestDirectory(char directoryName[250]){
     while (direntPointer = readdir(directoryPointer)) { //while there are more directories
         memset(&dirStat, 0, sizeof(dirStat));                     //allocate the memorY
         //printf("dir Name : %s Done \n", direntPointer->d_name);
-        if (stat(direntPointer->d_name, &dirStat))
-            if (S_ISDIR(dirStat.st_mode))
-                if (dirStat.st_mtime > latest)
+        if (stat(direntPointer->d_name, &dirStat)){
+            if (S_ISDIR(dirStat.st_mode)){
+                if (dirStat.st_mtime > latest){
                     if(strcmp(direntPointer->d_name, blackListDir));
                     {                   //if the directory is newer than the old one...
                         strcpy(directoryName, direntPointer->d_name);
@@ -53,7 +53,9 @@ void getNewestDirectory(char directoryName[250]){
 
                         //printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
                     }
-
+                }
+            }
+        }
     }
 
     printf("Get newestLast %s\n", directoryName);
