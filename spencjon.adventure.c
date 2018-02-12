@@ -60,18 +60,19 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
 
     //Read/store the room name
     fgets(buff, sizeof(buff), fs);
-    memcpy(rooms[roomNum].roomName, &buffer[12], sizeof(rooms[roomNum].roomName));
+
+    memcpy(rooms[roomNum].roomName, &buff[12], sizeof(rooms[roomNum].roomName));
 
     //Read/Store all the connections. The last fget will read the room type
     fgets(buff, sizeof(buff), fs);
     while(buff[0] == 'C'){
-      memcpy(rooms[roomNum].connections[i], &buffer[15], sizeof(rooms[roomNum].connections[i]));
+      memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
       i++;
       fgets(buff, sizeof(buff), fs);
     }
 
     //store the roomType
-    memcpy(rooms[roomNum].roomType, &buffer[12], sizeof(rooms[roomNum].roomType));
+    memcpy(rooms[roomNum].roomType, &buff[12], sizeof(rooms[roomNum].roomType));
 
     return;
 }
@@ -81,6 +82,8 @@ void readRooms(char directoryName[250], struct room *rooms){
     char buff[250];
     DIR *directoryPointer = opendir(directoryName);
     FILE *fs;
+    struct dirent *direntPointer;
+
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
         fs = fopen(buff, "r");
