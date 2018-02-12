@@ -48,9 +48,13 @@ void getNewestDirectory(char directoryName[250]){
                     if(strcmp(direntPointer->d_name, blackListDir));
                     {                   //if the directory is newer than the old one...
                         strcpy(directoryName, direntPointer->d_name);
+
+                        printf("DirName: %s Latest: %i, ST_mtime: %i\n", direntPointer->d_name, latest, dirStat.st_mtime);
                         latest = dirStat.st_mtime;
-                        printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
+
+                        //printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
                     }
+
     }
 
     printf("Get newestLast %s\n", directoryName);
