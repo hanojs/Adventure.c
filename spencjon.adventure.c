@@ -112,7 +112,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
       //fgets(buff, nSize, fs);
       printf("CONNECTION: %s\n", buff);
     }
-    getFileLine(buff, 8, fs);
+    //getFileLine(buff, 8, fs);
     printf("ROOM TYPE: %s\n", buff);
 
     //store the roomType
