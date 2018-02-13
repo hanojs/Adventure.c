@@ -65,8 +65,10 @@ int getFileLine(char *buff, int firstChar, FILE *fs){
   char tmp[240];
   int i;
   if(!fgets(tmp, sizeof(tmp), fs)){
-    printf("End.. %s", tmp);
     return 0;
+  }
+  if(tmp[5] == 't'){
+    firstChar = 11;
   }
   printf("Get File Line TMP: ---%s---\n", tmp);
   memcpy(buff, &tmp[firstChar], sizeof(tmp));
@@ -80,7 +82,9 @@ int getFileLine(char *buff, int firstChar, FILE *fs){
   }
 
   printf("Get File Line buff AFTER: ---%s---\n", buff);
-
+  if(tmp[5] == 't'){
+    return 0;
+  }
   
   return 1;
 }
