@@ -125,7 +125,8 @@ void readRooms(char directoryName[250], struct room *rooms){
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are files
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
         fs = fopen(buff, "r");
-        storeRoom(fs, rooms, i);
+        printf(buff);
+        //storeRoom(fs, rooms, i);
         i++; 
         fclose(fs);
     }
