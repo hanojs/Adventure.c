@@ -123,9 +123,12 @@ void readRooms(char directoryName[250], struct room *rooms){
     struct dirent *direntPointer;
     printf("Directory Name: %s\n", directoryName);
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are files
+        if(direntPointer->d_name[0] == '.'){
+          continue;
+        }
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
         fs = fopen(buff, "r");
-        printf(buff);
+        printf(buff \n);
         //storeRoom(fs, rooms, i);
         i++; 
         fclose(fs);
