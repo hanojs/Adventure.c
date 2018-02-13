@@ -93,20 +93,22 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     size_t nSize = sizeof(buff);
     //Read/store the room name
 
-    printf("ROOM NAME %s \n", &buff[12]);
-    memcpy(rooms[roomNum].roomName, &buff[12], sizeof(rooms[roomNum].roomName));
+    //printf("ROOM NAME %s \n", &buff[12]);
+    //memcpy(rooms[roomNum].roomName, &buff[12], sizeof(rooms[roomNum].roomName));
 
 
     //Read/Store all the connections. The last fget will read the room type
-    fgets(buff, nSize, fs);
-    //getFileLine(buff, nSize, 12, fs);
-    //printf("CONNECTION %s\n", &buff[15]);
-    while(getFileLine(buff, 15, fs)){
+    //fgets(buff, nSize, fs);
+    getFileLine(buff, nSize, 11, fs);
+    printf("ROOM NAME: %s\n", buff);
+    while(getFileLine(buff, 14, fs)){
       //memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
       //i++;
       //fgets(buff, nSize, fs);
-      //printf("ROOM TYPE %s\n", buff);
+      printf("CONNECTION: %s\n", buff);
     }
+    getFileLine(buff, nSize, 11, fs);
+    printf("ROOM TYPE: %s\n", buff);
 
     //store the roomType
     //memcpy(rooms[roomNum].roomType, &buff[12], sizeof(rooms[roomNum].roomType));
@@ -121,15 +123,14 @@ void readRooms(char directoryName[250], struct room *rooms){
     DIR *directoryPointer = opendir(directoryName);
     FILE *fs;
     struct dirent *direntPointer;
-    printf("Directory Name: %s\n", directoryName);
+    //printf("Directory Name: %s\n", directoryName);
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are files
         if(direntPointer->d_name[0] == '.'){
           continue;
         }
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
         fs = fopen(buff, "r");
-        printf("%s\n", buff);
-        //storeRoom(fs, rooms, i);
+        storeRoom(fs, rooms, i);
         i++; 
         fclose(fs);
     }
@@ -144,7 +145,7 @@ int main(){
 
   //path = malloc(sizeof(char*) * pathLength);  //We will use this
   getNewestDirectory(directoryName);
-  printf("Main Dir Name %s\n", directoryName);
+  //printf("Main Dir Name %s\n", directoryName);
   readRooms(directoryName, (struct room *)rooms);
 
   return 0;
