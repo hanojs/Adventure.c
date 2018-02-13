@@ -64,8 +64,10 @@ void getNewestDirectory(char directoryName[250]){
 int getFileLine(char *buff, int firstChar, FILE *fs){
   char tmp[240];
   int i;
-  if(!fgets(tmp, sizeof(tmp), fs))
+  if(!fgets(tmp, sizeof(tmp), fs)){
+    printf("End.. %s", tmp);
     return 0;
+  }
   printf("Get File Line TMP: ---%s---\n", tmp);
   memcpy(buff, &tmp[firstChar], sizeof(tmp));
   printf("Get File Line BUFF: ---%s---\n", buff);
