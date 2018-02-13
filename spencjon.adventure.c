@@ -31,30 +31,36 @@ struct path {
 };
 
 void getNewestDirectory(char directoryName[250]){
-    char blackListDir[5];
     DIR *directoryPointer = opendir(".");
-    struct dirent *direntPointer;
     struct stat dirStat;
+    struct dirent *direntPointer;
     time_t latest = 0;
-
-    blackListDir[0] = '.';
-    blackListDir[1] = '\0';
+    direntPointer = readdir(directoryPointer);
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
-        memset(&dirStat, 0, sizeof(dirStat));                     //allocate the memorY
-        printf("dir Name : %s Done \n", direntPointer->d_name);
-        if (stat(direntPointer->d_name, &dirStat) >= 0)
-            if (S_ISDIR(dirStat.st_mode))
-                if(strcmp(direntPointer->d_name, blackListDir));
-                    if (dirStat.st_mtime > latest)
-                    {                   //if the directory is newer than the old one...
-                        strcpy(directoryName, direntPointer->d_name);
-                        latest = dirStat.st_mtime;
-                        printf("Get newest 123 %s %s\n", directoryName, direntPointer->d_name);
-                    } //if statements are not stacked well. 
-    }
+        memset(&dirStat, 0, sizeof(dirStat)); //allocate the memorY
 
-    printf("Get newestLast %s\n", directoryName);
+        if (!(stat(direntPointer->d_name, &dirStat) < 0))
+            if (S_ISDIR(dirStat.st_mode)){
+                if (dirStat.st_mtime > latest)
+                { //if the directory is newer than the old one...
+                    strcpy(directoryName, direntPointer->d_name);
+                    latest = dirStat.st_mtime;
+                    printf("Directory name: %s \n", directoryName);
+                }
+            else
+            {
+              printf("Cant be gotten into \n");
+              continue; //if it can't be gotten into..
+            }
+        }
+        else
+        {
+          printf("Not a directory \n");
+          continue; //IF IT ISN'T A directory
+        }
+    }
     closedir(directoryPointer);
+    printf("Final Directory name: %s \n", directoryName);
 }
 
 int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
