@@ -36,7 +36,7 @@ void getNewestDirectory(char directoryName[250]){
     struct dirent *direntPointer;
     time_t latest = 0;
     direntPointer = readdir(directoryPointer);
-    while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories
+    while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories or files
         memset(&dirStat, 0, sizeof(dirStat)); //allocate the memorY
 
         if (!(stat(direntPointer->d_name, &dirStat) < 0))
@@ -45,17 +45,15 @@ void getNewestDirectory(char directoryName[250]){
                 { //if the directory is newer than the old one...
                     strcpy(directoryName, direntPointer->d_name);
                     latest = dirStat.st_mtime;
-                    printf("Directory name: %s \n", directoryName);
+                    //printf("Directory name: %s \n", directoryName);
                 }
             else
             {
-              printf("Cant be gotten into \n");
               continue; //if it can't be gotten into..
             }
         }
         else
         {
-          printf("Not a directory \n");
           continue; //IF IT ISN'T A directory
         }
     }
@@ -112,7 +110,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
 
 void readRooms(char directoryName[250], struct room *rooms){
     int i = 0;
-    char buff[250];
+    char buff[250]; //needed for fopen becuase you can't names with variables in fopen like in printf
 
     DIR *directoryPointer = opendir(directoryName);
     FILE *fs;
@@ -122,7 +120,7 @@ void readRooms(char directoryName[250], struct room *rooms){
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
         fs = fopen(buff, "r");
         storeRoom(fs, rooms, i);
-        i++;
+        i++; 
         fclose(fs);
     }
     closedir(directoryPointer);
