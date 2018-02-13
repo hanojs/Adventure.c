@@ -128,7 +128,7 @@ void readRooms(char directoryName[250], struct room *rooms){
         }
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
         fs = fopen(buff, "r");
-        printf(buff \n);
+        printf("%s\n", buff);
         //storeRoom(fs, rooms, i);
         i++; 
         fclose(fs);
