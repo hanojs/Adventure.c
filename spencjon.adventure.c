@@ -99,7 +99,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
 
     //Read/Store all the connections. The last fget will read the room type
     //fgets(buff, nSize, fs);
-    getFileLine(buff, nSize, 11, fs);
+    getFileLine(buff, 11, fs);
     printf("ROOM NAME: %s\n", buff);
     while(getFileLine(buff, 14, fs)){
       //memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
@@ -107,7 +107,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
       //fgets(buff, nSize, fs);
       printf("CONNECTION: %s\n", buff);
     }
-    getFileLine(buff, nSize, 11, fs);
+    getFileLine(buff, 11, fs);
     printf("ROOM TYPE: %s\n", buff);
 
     //store the roomType
