@@ -61,8 +61,11 @@ void getNewestDirectory(char directoryName[250]){
     //printf("Final Directory name: %s \n", directoryName);
 }
 
-int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
-  fgets(buff, nSize, fs);
+int getFileLine(char *buff, int firstChar, FILE *fs){
+  char tmp[240];
+  fgets(tmp, sizeof(tmp), fs);
+  printf("Get File Line TMP: ---%s---\n", tmp);
+  memcpy(buff, &tmp[firstChar], sizeof(tmp));
   printf("Get File Line BUFF: ---%s---\n", buff);
 
   while(*tmp){
@@ -70,6 +73,9 @@ int getFileLine(char *buff, size_t nSize, int firstChar, FILE *fs){
       *tmp='\0';
     tmp++;
   }
+
+  printf("Get File Line buff AFTER: ---%s---\n", buff);
+
   
   if(buff)
     return 1;
@@ -93,7 +99,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     fgets(buff, nSize, fs);
     //getFileLine(buff, nSize, 12, fs);
     //printf("CONNECTION %s\n", &buff[15]);
-    while(getFileLine(buff, nSize, 15, fs)){
+    while(getFileLine(buff, 15, fs)){
       //memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
       i++;
       //fgets(buff, nSize, fs);
