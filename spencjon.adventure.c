@@ -201,7 +201,6 @@ void getUserInput(char **buffer, size_t *bufferSize){
   fflush(stdin);
   getline(&tmpBuffer, bufferSize, stdin);
   i = 0;
-  printf("---%s---\n", tmpBuffer);
   while(i < *bufferSize){
     //printf("%i %c\n", i,tmpBuffer[i]);
     if(tmpBuffer[i]=='\n')
@@ -209,7 +208,6 @@ void getUserInput(char **buffer, size_t *bufferSize){
     i++;
   }
   *buffer = tmpBuffer;
-  printf("---%s---\n", *buffer);
 }
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
@@ -244,7 +242,7 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
     }
   }
 
-  printf("HUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
+  printf("\nHUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n\n");
 }
 
 int main(){
