@@ -135,7 +135,7 @@ void readRooms(char directoryName[250], struct room *rooms){
         storeRoom(fs, rooms, i);
         i++; 
         printf("OUT Room Num %i before close\n", i);        
-        fclose(fs);
+        if(fs) fclose(fs); //if the file poiinter isn't null, close it
         printf("OUT Room Num %i\n", i);
     }
     printf("OUT \n");
