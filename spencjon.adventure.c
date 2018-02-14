@@ -150,7 +150,7 @@ void printRoom(struct room *rooms, int i){
   int j;
   printf("ROOM NAME: %s\n", rooms[i].roomName);
   for(j = 1; j <= rooms[i].numCon; j++)
-    printf("CONNECTION %i: %s\n", rooms[i].connections[j-1]);
+    printf("CONNECTION %i: %s\n", j, rooms[i].connections[j-1]);
   printf("ROOM TYPE: %s\n", rooms[i].roomType);
 }
 int main(){
