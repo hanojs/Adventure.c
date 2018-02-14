@@ -198,6 +198,7 @@ void addToPath(struct path *playerPath, char *roomName){
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
   int i;
   char *buffer;
+  size_t bufferSize = 32;
   
   if(!strcmp(userIn, "time")){
      //displayTime();
