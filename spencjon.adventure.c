@@ -175,39 +175,39 @@ int getRoomByType(struct room *rooms, char *type){
 
   return 999;
 }
-void addToPath(struct path *path, char *roomName){
+void addToPath(struct path *playerPath, char *roomName){
   char **tmpPath;
   int i = 0;
-  path.pathLength++;
+  playerPath.pathLength++;
 
   //if the path is longer or equal to the path we've already allocated, double it and free the old one 
-  if(path.pathLength >= path.pathSize){
-    path.pathSize = 2 * path.pathSize
-    tmpPath = malloc(sizeof(char*) * path.pathSize);
-    for(i = 0; i < path.pathSize; i++){
-      tmpPath[i] = path.pathList[i];
+  if(playerPath.pathLength >= playerPath.pathSize){
+    playerPath.pathSize = 2 * playerPath.pathSize
+    tmpPath = malloc(sizeof(char*) * playerPath.pathSize);
+    for(i = 0; i < playerPath.pathSize; i++){
+      tmpPath[i] = playerPath.pathList[i];
     }
-    free(path.pathList);
-    path.pathList = tmpPath;
+    free(playerPath.pathList);
+    playerPath.pathList = tmpPath;
   }
 
-  path.pathList[pathLength - 1] = roomName;
+  playerPath.pathList[pathLength - 1] = roomName;
 }
 
 
-void userChoice(int *currentRoom, struct room *rooms, struct path *path, char *userIn){
+void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
   int i;
   if(!strcmp(userIn, "time")){
      //displayTime();
      printf("WHERE TO? >")
-     userChoice(currentRoom, rooms, path, getline()); //nested so that the vurrent locations doesn't play again.
+     userChoice(currentRoom, rooms, playerPath, getline()); //nested so that the vurrent locations doesn't play again.
      return;
   }
 
   for(i = 0; i < AD_NUM_ROOMS; i++){
     if(!strcmp(userIn, rooms[i].roomName)){
       *currentRoom = i;
-      addToPath(path, rooms[i].roomName);
+      addToPath(playerPath, rooms[i].roomName);
       return;
     }
   }
@@ -218,11 +218,11 @@ int main(){
   int i, currentRoom, endRoom;
   char directoryName[250];
   struct room rooms[AD_NUM_ROOMS];
-  struct path path;
+  struct path playerPath;
   //setup the initial path to have nothing in it. 
-  path.pathLength = 0;
-  path.pathSize = 10;
-  path.pathList = malloc(sizeof(char*) * path.pathSize); //allocate the memoryt for up to 10 steps
+  playerPath.pathLength = 0;
+  playerPath.pathSize = 10;
+  playerPath.pathList = malloc(sizeof(char*) * playerPath.pathSize); //allocate the memoryt for up to 10 steps
 
 
   //Get the data from the room files created just before this was run
@@ -237,9 +237,9 @@ int main(){
   //Start the game
   while(currentRoom != endRoom){
     displayCurrentLocation(rooms, currentRoom);
-    userChoice(&currentRoom, rooms, &path, getline());
+    userChoice(&currentRoom, rooms, &playerPath, getline());
   }
 
-  free(path.pathList);
+  free(playerPath.pathList);
   return 0;
 }
