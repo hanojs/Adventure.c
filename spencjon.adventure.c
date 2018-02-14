@@ -199,14 +199,14 @@ void getUserInput(char **buffer, size_t *bufferSize){
   fflush(stdin);
   getline(buffer, bufferSize, stdin);
   i = 0;
-  printf("---%s---%i---\n", *buffer);
+  printf("---%s---\n", *buffer, );
   while(i < *bufferSize){
     printf("%i %c\n", i,*buffer[i]);
     if(*buffer[i]=='\n')
       *buffer[i]='\0';
     i++;
   }
-  printf("---%s---%i---\n", *buffer);
+  printf("---%s---\n", *buffer);
 }
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
