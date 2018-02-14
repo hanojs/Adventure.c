@@ -199,7 +199,7 @@ void getUserInput(char **buffer, size_t *bufferSize){
   fflush(stdin);
   getline(buffer, bufferSize, stdin);
   i = 0;
-  while(*buffer[i]){
+  while(i < 32){
     if(*buffer[i]=='\n')
       *buffer[i]='\0';
     i++;
