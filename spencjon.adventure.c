@@ -203,12 +203,11 @@ void getUserInput(char **buffer, size_t *bufferSize){
   i = 0;
   printf("---%s---\n", tmpBuffer);
   while(i < *bufferSize){
-    printf("%i %c\n", i,tmpBuffer[i]);
+    //printf("%i %c\n", i,tmpBuffer[i]);
     if(tmpBuffer[i]=='\n')
       tmpBuffer[i]='\0';
     i++;
   }
-  free(*buffer);
   *buffer = tmpBuffer;
   printf("---%s---\n", *buffer);
 }
