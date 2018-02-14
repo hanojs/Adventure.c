@@ -178,20 +178,20 @@ int getRoomByType(struct room *rooms, char *type){
 void addToPath(struct path *playerPath, char *roomName){
   char **tmpPath;
   int i = 0;
-  playerPath.pathLength++;
+  playerPath->pathLength++;
 
   //if the path is longer or equal to the path we've already allocated, double it and free the old one 
-  if(playerPath.pathLength >= playerPath.pathSize){
-    playerPath.pathSize = 2 * playerPath.pathSize
-    tmpPath = malloc(sizeof(char*) * playerPath.pathSize);
-    for(i = 0; i < playerPath.pathSize; i++){
-      tmpPath[i] = playerPath.pathList[i];
+  if(playerPath->pathLength >= playerPath->pathSize){
+    playerPath->pathSize = 2 * playerPath->pathSize
+    tmpPath = malloc(sizeof(char*) * playerPath->pathSize);
+    for(i = 0; i < playerPath->pathSize; i++){
+      tmpPath[i] = playerPath->pathList[i];
     }
-    free(playerPath.pathList);
-    playerPath.pathList = tmpPath;
+    free(playerPath->pathList);
+    playerPath->pathList = tmpPath;
   }
 
-  playerPath.pathList[pathLength - 1] = roomName;
+  playerPath->pathList[pathLength - 1] = roomName;
 }
 
 
