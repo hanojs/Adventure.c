@@ -64,17 +64,16 @@ void getNewestDirectory(char directoryName[250]){
 int getFileLine(char *buff, int firstChar, FILE *fs){
   char tmp[240];
   int i;
-  fflush(stdin);
+  
   if(!fgets(tmp, sizeof(tmp), fs)){
     return 0;
   }
+
   if(tmp[5] == 'T'){
     firstChar = 11;
   }
-  //printf("\n%c\n", tmp[5]);
-  //printf("Get File Line TMP: ---%s---\n", tmp);
+
   memcpy(buff, &tmp[firstChar], sizeof(tmp));
-  //printf("Get File Line BUFF: ---%s---\n", buff);
 
   i = 0;
   while(buff[i]){
@@ -83,7 +82,6 @@ int getFileLine(char *buff, int firstChar, FILE *fs){
     i++;
   }
 
-  //printf("Get File Line buff AFTER: ---%s---\n", buff);
   if(tmp[5] == 'T'){
     return 0;
   }
@@ -156,6 +154,12 @@ int main(){
   getNewestDirectory(directoryName);
   //printf("Main Dir Name %s\n", directoryName);
   readRooms(directoryName, (struct room *)rooms);
+
+
+
+
+
+
 
   return 0;
 }
