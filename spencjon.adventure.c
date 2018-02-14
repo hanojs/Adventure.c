@@ -67,7 +67,7 @@ int getFileLine(char *buff, int firstChar, FILE *fs){
   if(!fgets(tmp, sizeof(tmp), fs)){
     return 0;
   }
-  if(tmp[5] == 't'){
+  if(tmp[5] == 'T'){
     firstChar = 11;
   }
   printf("\n%c\n", tmp[5]);
@@ -83,7 +83,7 @@ int getFileLine(char *buff, int firstChar, FILE *fs){
   }
 
   printf("Get File Line buff AFTER: ---%s---\n", buff);
-  if(tmp[5] == 't'){
+  if(tmp[5] == 'T'){
     return 0;
   }
   
