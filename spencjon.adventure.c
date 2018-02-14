@@ -182,7 +182,7 @@ void addToPath(struct path *playerPath, char *roomName){
 
   //if the path is longer or equal to the path we've already allocated, double it and free the old one 
   if(playerPath->pathLength >= playerPath->pathSize){
-    playerPath->pathSize = 2 * playerPath->pathSize
+    playerPath->pathSize = 2 * playerPath->pathSize;
     tmpPath = malloc(sizeof(char*) * playerPath->pathSize);
     for(i = 0; i < playerPath->pathSize; i++){
       tmpPath[i] = playerPath->pathList[i];
@@ -191,16 +191,20 @@ void addToPath(struct path *playerPath, char *roomName){
     playerPath->pathList = tmpPath;
   }
 
-  playerPath->pathList[pathLength - 1] = roomName;
+  playerPath->pathList[playerPath->pathLength - 1] = roomName;
 }
 
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
   int i;
+  char *buffer;
+  
   if(!strcmp(userIn, "time")){
      //displayTime();
-     printf("WHERE TO? >")
+     printf("WHERE TO? >");
+     buffer = malloc(bufferSize * sizeof(char));
      userChoice(currentRoom, rooms, playerPath, getline()); //nested so that the vurrent locations doesn't play again.
+     free(buffer);
      return;
   }
 
@@ -217,6 +221,8 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
 int main(){
   int i, currentRoom, endRoom;
   char directoryName[250];
+  char *buffer;
+  size_t bufferSize = 32;
   struct room rooms[AD_NUM_ROOMS];
   struct path playerPath;
   //setup the initial path to have nothing in it. 
@@ -234,12 +240,14 @@ int main(){
   currentRoom = getRoomByType(rooms, "START_ROOM");
   endRoom = getRoomByType(rooms, "END_ROOM");
 
+  buffer = malloc(bufferSize * sizeof(char));
   //Start the game
   while(currentRoom != endRoom){
     displayCurrentLocation(rooms, currentRoom);
-    userChoice(&currentRoom, rooms, &playerPath, getline());
+    userChoice(&currentRoom, rooms, &playerPath, getline(&buffer, &bufferSize, stdin));
   }
 
   free(playerPath.pathList);
+  free(buffer);
   return 0;
 }
