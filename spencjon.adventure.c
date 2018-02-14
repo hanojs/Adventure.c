@@ -24,6 +24,7 @@ struct room {
   char roomName[AD_NAME_INITIAL];
   char roomType[20];
   char connections[AD_MAX_CONN][AD_NAME_INITIAL];
+  int numConnections;
 };
 struct path {
   char **path;
@@ -64,7 +65,7 @@ void getNewestDirectory(char directoryName[250]){
 int getFileLine(char *buff, int firstChar, FILE *fs){
   char tmp[240];
   int i;
-  
+
   if(!fgets(tmp, sizeof(tmp), fs)){
     return 0;
   }
@@ -113,6 +114,10 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     //store the roomType
     memcpy(rooms[roomNum].roomType, buff, sizeof(rooms[roomNum].roomType));
     //printf("ROOM TYPE: %s\n", buff);
+    
+
+    //store the number of connections
+    rooms[roomNum].numCon = i; //The while loop will iterate i to the number of connections
 
     return;
 }
@@ -144,8 +149,15 @@ void readRooms(char directoryName[250], struct room *rooms){
     closedir(directoryPointer);
     return;
 }
-
+void printRoom(struct room *rooms, int room){
+  int j;
+  printf("ROOM NAME: %s\n", rooms[i].roomName);
+  for(j = 1; j <= rooms[i].numCon; j++)
+    printf("CONNECTION %i: %s\n", rooms[i].connections[j]);
+  printf("ROOM TYPE: %s\n", rooms[i].roomType);
+}
 int main(){
+  int i;
   char directoryName[250];
   struct room rooms[AD_NUM_ROOMS];
   struct path pathList;
@@ -154,7 +166,8 @@ int main(){
   getNewestDirectory(directoryName);
   //printf("Main Dir Name %s\n", directoryName);
   readRooms(directoryName, (struct room *)rooms);
-
+  for(int i = 0; i < AD_NUM_ROOMS; i++)
+    printRoom(rooms, i);  
 
 
 
