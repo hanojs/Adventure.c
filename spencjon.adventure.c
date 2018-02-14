@@ -204,7 +204,7 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
      //displayTime();
      printf("WHERE TO? >");
      buffer = malloc(bufferSize * sizeof(char));
-     getline(&buffer, &bufferSize, stdin)
+     getline(&buffer, &bufferSize, stdin);
      userChoice(currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
      free(buffer);
      return;
@@ -246,7 +246,7 @@ int main(){
   //Start the game
   while(currentRoom != endRoom){
     displayCurrentLocation(rooms, currentRoom);
-    getline(&buffer, &bufferSize, stdin)
+    getline(&buffer, &bufferSize, stdin);
     userChoice(&currentRoom, rooms, &playerPath, buffer);
   }
 
