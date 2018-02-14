@@ -148,6 +148,7 @@ void readRooms(char directoryName[250], struct room *rooms){
     closedir(directoryPointer);
     return;
 }
+
 void displayCurrentLocation(struct room *rooms, int i){
   int j = 0;
   fflush(stdout);
@@ -174,12 +175,43 @@ int getRoomByType(struct room *rooms, char *type){
 
   return 999;
 }
-void printRoom(struct room *rooms, int i){
-  int j;
-  printf("ROOM NAME: %s\n", rooms[i].roomName);
-  for(j = 1; j <= rooms[i].numCon; j++)
-    printf("CONNECTION %i: %s\n", j, rooms[i].connections[j]);
-  printf("ROOM TYPE: %s\n", rooms[i].roomType);
+void addToPath(struct path *path, char *roomName){
+  char **tmpPath;
+  int i = 0;
+  path.pathLength++;
+
+  //if the path is longer or equal to the path we've already allocated, double it and free the old one 
+  if(path.pathLength >= path.pathSize){
+    path.pathSize = 2 * path.pathSize
+    tmpPath = malloc(sizeof(char*) * path.pathSize);
+    for(i = 0; i < path.pathSize; i++){
+      tmpPath[i] = path.pathList[i];
+    }
+    free(path.pathList);
+    path.pathList = tmpPath;
+  }
+
+  path.pathList[pathLength - 1] = roomName;
+}
+
+
+void userChoice(int *currentRoom, struct room *rooms, struct path *path, char *userIn){
+  int i;
+  if(!strcmp(userIn, "time")){
+     //displayTime();
+     printf("WHERE TO? >")
+     userChoice(currentRoom, rooms, path, getline()); //nested so that the vurrent locations doesn't play again.
+     return;
+  }
+
+  for(i = 0; i < AD_NUM_ROOMS; i++){
+    if(!strcmp(userIn, rooms[i].roomName)){
+      *currentRoom = i;
+      addToPath(path, rooms[i].roomName);
+      return;
+    }
+  }
+  printf("HUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
 }
 
 int main(){
@@ -190,7 +222,7 @@ int main(){
   //setup the initial path to have nothing in it. 
   path.pathLength = 0;
   path.pathSize = 10;
-  path.pathList = malloc(sizeof(char) * AD_NAME_INITIAL * path.pathLength); //allocate the memoryt for up to 10 steps
+  path.pathList = malloc(sizeof(char*) * path.pathSize); //allocate the memoryt for up to 10 steps
 
 
   //Get the data from the room files created just before this was run
@@ -198,18 +230,15 @@ int main(){
   readRooms(directoryName, (struct room *)rooms);
 
   //get the starting and ending rooms
-  for(i = 0; i < AD_NUM_ROOMS; i++)
-    printRoom(rooms, i);  
 
   currentRoom = getRoomByType(rooms, "START_ROOM");
-  printf("Current Room %i \n", currentRoom);
   endRoom = getRoomByType(rooms, "END_ROOM");
-  printf("End Room %i \n", endRoom);
 
   //Start the game
-  //while(isGameOver(rooms, currentRoom))
-  displayCurrentLocation(rooms, currentRoom);
-
+  while(currentRoom != endRoom){
+    displayCurrentLocation(rooms, currentRoom);
+    userChoice(&currentRoom, rooms, &path, getline());
+  }
 
   free(path.pathList);
   return 0;
