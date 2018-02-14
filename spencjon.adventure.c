@@ -201,7 +201,7 @@ void getUserInput(char **buffer, size_t *bufferSize){
   if(*buffer[inputSize]){
     *buffer[inputSize] = '\0';
   }
-  printf("---%s---\n", *buffer);
+  printf("---%s---%i---\n", *buffer, inputSize);
 }
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
