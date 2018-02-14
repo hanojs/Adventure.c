@@ -213,7 +213,7 @@ void getUserInput(char **buffer, size_t *bufferSize){
 }
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
-  int i;
+  int i, flag = 1;
   char *buffer;
   size_t bufferSize = 32;
 
@@ -227,11 +227,21 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
     return;
   }
 
-  for(i = 0; i < AD_NUM_ROOMS; i++){
-    if(strcmp(userIn, rooms[i].roomName)) continue;
-    *currentRoom = i;
-    addToPath(playerPath, rooms[i].roomName);
-    return;
+  //test if the asked for room is in the list of connections
+  for(i = 0; i < rooms[i].numCon; i++){
+    if(strcmp(userIn, rooms[*currentRoom].connections[i])) continue;
+    flag = 0;
+    break;
+  }
+
+  //if the room is in the list of connections, find what room number that is
+  if(flag){
+    for(i = 0; i < AD_NUM_ROOMS; i++){
+      if(strcmp(userIn, rooms[i].roomName)) continue;
+      *currentRoom = i;
+      addToPath(playerPath, rooms[i].roomName);
+      return;
+    }
   }
 
   printf("HUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
