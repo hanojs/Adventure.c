@@ -20,6 +20,7 @@
 #endif
 
 
+
 struct room {
   char roomName[AD_NAME_INITIAL];
   char roomType[20];
@@ -27,8 +28,9 @@ struct room {
   int numCon;
 };
 struct path {
-  char **path;
+  char **pathList;
   int pathLength;
+  int pathSize;
 };
 
 void getNewestDirectory(char directoryName[250]){
@@ -146,30 +148,59 @@ void readRooms(char directoryName[250], struct room *rooms){
     closedir(directoryPointer);
     return;
 }
-void printRoom(struct room *rooms, int i){
-  int j;
-  printf("ROOM NAME: %s\n", rooms[i].roomName);
-  for(j = 1; j <= rooms[i].numCon; j++)
-    printf("CONNECTION %i: %s\n", j, rooms[i].connections[j-1]);
-  printf("ROOM TYPE: %s\n", rooms[i].roomType);
+void displayCurrentLocation(struct room *rooms, int i){
+  int j = 0;
+  fflush(stdout);
+  printf("CURRENT LOCATION: %s\n", rooms[i].roomName);
+
+  //POSSIBLE CONNECTIONS: PLOVER, Dungeon, twisty.
+  printf("POSSIBLE CONNECTIONS: %s", rooms[i].connections[j]);
+  for(j = 1; j < rooms[i].numCon; j++)
+    printf(", %s", rooms[i].connections[j]);
+  printf(".\n");
+
+
+  //WHERE TO? > (Then get the input)
+  printf("WHERE TO? >");
 }
-int main(){
+
+int getRoomByType(struct room *rooms, char *type){
   int i;
+
+  for(i = 0; i < AD_NUM_ROOMS; i++){
+    if(strcmp(rooms[i].roomType, type)) continue;
+    return i;
+  }
+
+  return 999;
+}
+
+int main(){
+  int i, currentRoom, endRoom;
   char directoryName[250];
   struct room rooms[AD_NUM_ROOMS];
   struct path pathList;
+  //setup the initial path to have nothing in it. 
+  path.pathLength = 0;
+  path.pathSize = 10;
+  path.pathList = malloc(sizeof(char) * AD_NAME_INITIAL * pathLength); //allocate the memoryt for up to 10 steps
 
-  //path = malloc(sizeof(char*) * pathLength);  //We will use this
+
+  //Get the data from the room files created just before this was run
   getNewestDirectory(directoryName);
-  //printf("Main Dir Name %s\n", directoryName);
   readRooms(directoryName, (struct room *)rooms);
-  for(i = 0; i < AD_NUM_ROOMS; i++)
-    printRoom(rooms, i);  
+
+  //get the starting and ending rooms
+  currentRoom = getRoomByType(rooms, "START_ROOM");
+  printf("Current Room %i \n", currentRoom);
+  endRoom = getRoomByType(rooms, "END_ROOM");
+  printf("End Room %i \n", endRoom);
+
+  //Start the game
+  //while(isGameOver(rooms, currentRoom))
+  displayCurrentLocation(rooms, currentRoom);
 
 
-
-
-
-
+  free(path);
   return 0;
 }
