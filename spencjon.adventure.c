@@ -114,7 +114,7 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     
     //store the roomType
     memcpy(rooms[roomNum].roomType, buff, sizeof(rooms[roomNum].roomType));
-    printf("ROOM TYPE: %s\n", buff);
+    //printf("ROOM TYPE: %s\n", buff);
 
     return;
 }
