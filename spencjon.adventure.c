@@ -245,13 +245,25 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
   printf("\nHUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n\n");
 }
 
+void printEndOfGame(struct path *playerPath){
+  int i;
+
+  printf("YOU HAVE FOUND THE END ROOM. CONGRATULATIONS!\n");
+  printf("YOU TOOK %i STEPS. YOUR PATH TO VICTORY WAS:\n", playerPath->pathLength);
+  for(i = 0; i < playerPath->pathLength; i++){
+    printf("%s\n", playerPath->pathList[i]);
+  }
+}
+
 int main(){
   int i, currentRoom, endRoom;
   char directoryName[250];
   char *buffer;
   size_t bufferSize = 32;
+
   struct room rooms[AD_NUM_ROOMS];
   struct path playerPath;
+  
   //setup the initial path to have nothing in it. 
   playerPath.pathLength = 0;
   playerPath.pathSize = 10;
@@ -263,7 +275,6 @@ int main(){
   readRooms(directoryName, (struct room *)rooms);
 
   //get the starting and ending rooms
-
   currentRoom = getRoomByType(rooms, "START_ROOM");
   endRoom = getRoomByType(rooms, "END_ROOM");
 
@@ -272,9 +283,13 @@ int main(){
     displayCurrentLocation(rooms, currentRoom);
     getUserInput(&buffer, &bufferSize);
     userChoice(&currentRoom, rooms, &playerPath, buffer);
+    free(buffer); //clean up buffer
   }
 
+  //end the game
+  printEndOfGame(&playerPath);
+
+  //clean up 
   free(playerPath.pathList);
-  free(buffer);
   return 0;
 }
