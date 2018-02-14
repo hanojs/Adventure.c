@@ -195,11 +195,14 @@ void addToPath(struct path *playerPath, char *roomName){
 }
 
 void getUserInput(char **buffer, size_t *bufferSize){
-  size_t inputSize;
+  int i;
   fflush(stdin);
-  inputSize = getline(buffer, bufferSize, stdin);
-  if(*buffer[inputSize]){
-    *buffer[inputSize] = '\0';
+  getline(buffer, bufferSize, stdin);
+  i = 0;
+  while(*buffer[i]){
+    if(*buffer[i]=='\n')
+      *buffer[i]='\0';
+    i++;
   }
   printf("---%s---%i---\n", *buffer, inputSize);
 }
