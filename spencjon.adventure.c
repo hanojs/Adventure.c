@@ -70,6 +70,7 @@ int getFileLine(char *buff, int firstChar, FILE *fs){
   if(tmp[5] == 't'){
     firstChar = 11;
   }
+  printf("\n%c\n", tmp[5]);
   printf("Get File Line TMP: ---%s---\n", tmp);
   memcpy(buff, &tmp[firstChar], sizeof(tmp));
   printf("Get File Line BUFF: ---%s---\n", buff);
