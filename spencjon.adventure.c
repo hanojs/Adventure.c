@@ -201,13 +201,15 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
   size_t bufferSize = 32;
 
   if(!strcmp(userIn, "time")){
-     //displayTime();
-     printf("WHERE TO? >");
-     buffer = malloc(bufferSize * sizeof(char));
-     getline(&buffer, &bufferSize, stdin);
-     userChoice(currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
-     free(buffer);
-     return;
+    //displayTime();
+    printf("WHERE TO? >");
+    buffer = malloc(bufferSize * sizeof(char));
+    fflush(stdin);
+    getline(&buffer, &bufferSize, stdin);
+    printf("UserIn: ---%s---", buffer);
+    userChoice(currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
+    free(buffer);
+    return;
   }
 
   for(i = 0; i < AD_NUM_ROOMS; i++){
@@ -246,7 +248,9 @@ int main(){
   //Start the game
   while(currentRoom != endRoom){
     displayCurrentLocation(rooms, currentRoom);
+    fflush(stdin);
     getline(&buffer, &bufferSize, stdin);
+    printf("UserIn: %s", buffer);
     userChoice(&currentRoom, rooms, &playerPath, buffer);
   }
 
