@@ -178,7 +178,7 @@ void printRoom(struct room *rooms, int i){
   int j;
   printf("ROOM NAME: %s\n", rooms[i].roomName);
   for(j = 1; j <= rooms[i].numCon; j++)
-    printf("CONNECTION %i: %s\n", rooms[i].connections[j]);
+    printf("CONNECTION %i: %s\n", j, rooms[i].connections[j]);
   printf("ROOM TYPE: %s\n", rooms[i].roomType);
 }
 
@@ -200,7 +200,7 @@ int main(){
   //get the starting and ending rooms
   for(i = 0; i < AD_NUM_ROOMS; i++)
     printRoom(rooms, i);  
-    
+
   currentRoom = getRoomByType(rooms, "START_ROOM");
   printf("Current Room %i \n", currentRoom);
   endRoom = getRoomByType(rooms, "END_ROOM");
