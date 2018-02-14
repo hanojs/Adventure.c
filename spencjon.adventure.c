@@ -179,11 +179,11 @@ int main(){
   int i, currentRoom, endRoom;
   char directoryName[250];
   struct room rooms[AD_NUM_ROOMS];
-  struct path pathList;
+  struct path path;
   //setup the initial path to have nothing in it. 
   path.pathLength = 0;
   path.pathSize = 10;
-  path.pathList = malloc(sizeof(char) * AD_NAME_INITIAL * pathLength); //allocate the memoryt for up to 10 steps
+  path.pathList = malloc(sizeof(char) * AD_NAME_INITIAL * path.pathLength); //allocate the memoryt for up to 10 steps
 
 
   //Get the data from the room files created just before this was run
