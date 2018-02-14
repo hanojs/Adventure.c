@@ -213,7 +213,7 @@ void getUserInput(char **buffer, size_t *bufferSize){
 }
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
-  int i, flag = 1;
+  int i, flag = 0;
   char *buffer;
   size_t bufferSize = 32;
 
@@ -230,7 +230,7 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
   //test if the asked for room is in the list of connections
   for(i = 0; i < rooms[i].numCon; i++){
     if(strcmp(userIn, rooms[*currentRoom].connections[i])) continue;
-    flag = 0;
+    flag = 1;
     break;
   }
 
