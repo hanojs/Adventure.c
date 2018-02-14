@@ -138,14 +138,11 @@ void readRooms(char directoryName[250], struct room *rooms){
         fs = fopen(buff, "r");
         storeRoom(fs, rooms, i);
         i++; 
-        printf("OUT Room Num %i before close\n", i);       
         fflush(stdin); 
         if(fs == NULL){
           fclose(fs); //if the file poiinter isn't null, close it
         }
-        printf("OUT Room Num %i\n", i);
     }
-    printf("OUT \n");
     closedir(directoryPointer);
     return;
 }
@@ -153,7 +150,7 @@ void printRoom(struct room *rooms, int i){
   int j;
   printf("ROOM NAME: %s\n", rooms[i].roomName);
   for(j = 1; j <= rooms[i].numCon; j++)
-    printf("CONNECTION %i: %s\n", rooms[i].connections[j]);
+    printf("CONNECTION %i: %s\n", rooms[i].connections[j-1]);
   printf("ROOM TYPE: %s\n", rooms[i].roomType);
 }
 int main(){
