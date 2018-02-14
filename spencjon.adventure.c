@@ -138,7 +138,7 @@ void readRooms(char directoryName[250], struct room *rooms){
         fclose(fs);
         printf("OUT Room Num %i\n", i);
     }
-    printf("OUT \n")
+    printf("OUT \n");
     closedir(directoryPointer);
     return;
 }
