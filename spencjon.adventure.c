@@ -99,25 +99,21 @@ void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     size_t nSize = sizeof(buff);
     //Read/store the room name
 
-    //printf("ROOM NAME %s \n", &buff[12]);
-    //memcpy(rooms[roomNum].roomName, &buff[12], sizeof(rooms[roomNum].roomName));
-
-
-    //Read/Store all the connections. The last fget will read the room type
-    //fgets(buff, nSize, fs);
     getFileLine(buff, 11, fs);
-    printf("ROOM NAME: %s\n", buff);
-    while(getFileLine(buff, 14, fs)){
-      //memcpy(rooms[roomNum].connections[i], &buff[15], sizeof(rooms[roomNum].connections[i]));
-      //i++;
-      //fgets(buff, nSize, fs);
-      printf("CONNECTION: %s\n", buff);
-    }
-    //getFileLine(buff, 8, fs);
-    printf("ROOM TYPE: %s\n", buff);
+    memcpy(rooms[roomNum].roomName, buff, sizeof(rooms[roomNum].roomName));
+    //printf("ROOM NAME: %s\n", buff);
 
+    
+    //Read/Store all the connections. The last fget will read the room type
+    while(getFileLine(buff, 14, fs)){
+      memcpy(rooms[roomNum].connections[i], buff, sizeof(rooms[roomNum].connections[i]));
+      i++; //increment the connection num
+      //printf("CONNECTION: %s\n", buff);
+    }
+    
     //store the roomType
-    //memcpy(rooms[roomNum].roomType, &buff[12], sizeof(rooms[roomNum].roomType));
+    memcpy(rooms[roomNum].roomType, buff, sizeof(rooms[roomNum].roomType));
+    //printf("ROOM TYPE: %s\n", buff);
 
     return;
 }
