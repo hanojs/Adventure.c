@@ -213,11 +213,11 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
   }
 
   for(i = 0; i < AD_NUM_ROOMS; i++){
-    if(!strcmp(userIn, rooms[i].roomName)){
-      *currentRoom = i;
-      addToPath(playerPath, rooms[i].roomName);
-      return;
-    }
+    printf("--%s----%s--", userIn, rooms[i].roomName);
+    if(strcmp(userIn, rooms[i].roomName)) continue;
+    *currentRoom = i;
+    addToPath(playerPath, rooms[i].roomName);
+    return;
   }
   printf("HUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
 }
@@ -250,7 +250,7 @@ int main(){
     displayCurrentLocation(rooms, currentRoom);
     fflush(stdin);
     getline(&buffer, &bufferSize, stdin);
-    printf("UserIn: %s", buffer);
+    printf("UserIn: --%s--", buffer);
     userChoice(&currentRoom, rooms, &playerPath, buffer);
   }
 
