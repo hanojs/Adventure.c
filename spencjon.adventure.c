@@ -198,9 +198,10 @@ void getUserInput(char **buffer, size_t *bufferSize){
   size_t inputSize;
   fflush(stdin);
   inputSize = getline(buffer, bufferSize, stdin);
-  if(*buffer[inputSize - 1] == '\n'){
-    *buffer[inputSize -1] = '\0';
+  if(*buffer[inputSize]){
+    *buffer[inputSize] = '\0';
   }
+  printf("---%s---\n", *buffer);
 }
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
@@ -224,6 +225,7 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
     addToPath(playerPath, rooms[i].roomName);
     return;
   }
+
   printf("HUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
 }
 
