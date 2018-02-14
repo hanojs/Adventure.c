@@ -4,14 +4,18 @@
 *
 *
 ************************************/
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <dirent.h>
-#include <stdio.h>
+#include <sys/types.h>  
+#include <sys/stat.h> //pid
+#include <unistd.h> 
+#include <dirent.h> //for dirent pointer
+#include <stdio.h>  
 #include <string.h> //memset strcpy
 #include <stdlib.h> //malloc
 
+#include <pthread.h> //multithreading
+
+
+//various commonly used numbers
 #ifndef AD_VALUES
   #define AD_NUM_ROOMS 7
   #define AD_MIN_CONN 3
@@ -20,13 +24,15 @@
 #endif
 
 
-
+//stores the name, type, and connections of a room
 struct room {
   char roomName[AD_NAME_INITIAL];
   char roomType[20];
   char connections[AD_MAX_CONN][AD_NAME_INITIAL];
   int numCon;
 };
+
+//stores the path a player takes
 struct path {
   char **pathList;
   int pathLength;
@@ -210,13 +216,20 @@ void getUserInput(char **buffer, size_t *bufferSize){
   *buffer = tmpBuffer;
 }
 
+void displayTime(){
+
+}
+
+
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
   int i, flag = 0;
   char *buffer;
   size_t bufferSize = 32;
+  pthread_t timeThread;
 
   if(!strcmp(userIn, "time")){
-    //displayTime();
+    pthread_create(&timeThread, NULL, displayTime, NULL);
+    pthread_join
     printf("WHERE TO? >");
     buffer = malloc(bufferSize * sizeof(char));
     getUserInput(&buffer, &bufferSize);
@@ -255,15 +268,17 @@ void printEndOfGame(struct path *playerPath){
   }
 }
 
+
 int main(){
   int i, currentRoom, endRoom;
   char directoryName[250];
   char *buffer;
   size_t bufferSize = 32;
-
+  pthread_t myThreadID;
   struct room rooms[AD_NUM_ROOMS];
   struct path playerPath;
-  
+
+
   //setup the initial path to have nothing in it. 
   playerPath.pathLength = 0;
   playerPath.pathSize = 10;
