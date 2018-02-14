@@ -195,17 +195,21 @@ void addToPath(struct path *playerPath, char *roomName){
 }
 
 void getUserInput(char **buffer, size_t *bufferSize){
-  int i;
+  int i;\
+  char *tmpBuffer = malloc(*bufferSize * sizeof(char));
+  
   fflush(stdin);
-  getline(buffer, bufferSize, stdin);
+  getline(&tmpBuffer, bufferSize, stdin);
   i = 0;
-  printf("---%s---\n", *buffer);
+  printf("---%s---\n", tmpBuffer);
   while(i < *bufferSize){
-    printf("%i %c\n", i,*buffer[i]);
-    if(*buffer[i]=='\n')
-      *buffer[i]='\0';
+    printf("%i %c\n", i,tmpBuffer[i]);
+    if(tmpBuffer[i]=='\n')
+      tmpBuffer[i]='\0';
     i++;
   }
+  free(*buffer);
+  *buffer = tmpBuffer;
   printf("---%s---\n", *buffer);
 }
 
@@ -256,7 +260,6 @@ int main(){
   currentRoom = getRoomByType(rooms, "START_ROOM");
   endRoom = getRoomByType(rooms, "END_ROOM");
 
-  buffer = malloc(bufferSize * sizeof(char));
   //Start the game
   while(currentRoom != endRoom){
     displayCurrentLocation(rooms, currentRoom);
