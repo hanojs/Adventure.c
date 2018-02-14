@@ -201,10 +201,10 @@ void addToPath(struct path *playerPath, char *roomName){
 }
 
 void getUserInput(char **buffer, size_t *bufferSize){
-  int i;\
-  char *tmpBuffer = malloc(*bufferSize * sizeof(char));
+  int i;
+  char *tmpBuffer = malloc(*bufferSize * sizeof(char)); //freed in main after every loop, or in getUser choice if time is selected
   
-  fflush(stdin);
+  fflush(stdin); //user input 1/10 times would get corrupted by the stdin buffer not being clear
   getline(&tmpBuffer, bufferSize, stdin);
   i = 0;
   while(i < *bufferSize){
@@ -225,8 +225,8 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
   int i, flag = 0;
   char *buffer;
   size_t bufferSize = 32;
-  pthread_t timeThread;
 
+  //print time...
   if(!strcmp(userIn, "time")){
     pthread_create(&timeThread, NULL, displayTime, NULL);
     pthread_join
@@ -255,12 +255,14 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
     }
   }
 
+  //if not time or a connected room...
   printf("\nHUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n\n");
 }
 
+
+//prints the end statements and loops through the path
 void printEndOfGame(struct path *playerPath){
   int i;
-
   printf("YOU HAVE FOUND THE END ROOM. CONGRATULATIONS!\n");
   printf("YOU TOOK %i STEPS. YOUR PATH TO VICTORY WAS:\n", playerPath->pathLength);
   for(i = 0; i < playerPath->pathLength; i++){
