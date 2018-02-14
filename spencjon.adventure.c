@@ -201,6 +201,6 @@ int main(){
   displayCurrentLocation(rooms, currentRoom);
 
 
-  free(path);
+  free(path.pathList);
   return 0;
 }
