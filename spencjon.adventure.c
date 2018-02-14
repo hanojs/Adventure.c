@@ -24,7 +24,7 @@ struct room {
   char roomName[AD_NAME_INITIAL];
   char roomType[20];
   char connections[AD_MAX_CONN][AD_NAME_INITIAL];
-  int numConnections;
+  int numCon;
 };
 struct path {
   char **path;
@@ -149,7 +149,7 @@ void readRooms(char directoryName[250], struct room *rooms){
     closedir(directoryPointer);
     return;
 }
-void printRoom(struct room *rooms, int room){
+void printRoom(struct room *rooms, int i){
   int j;
   printf("ROOM NAME: %s\n", rooms[i].roomName);
   for(j = 1; j <= rooms[i].numCon; j++)
@@ -166,7 +166,7 @@ int main(){
   getNewestDirectory(directoryName);
   //printf("Main Dir Name %s\n", directoryName);
   readRooms(directoryName, (struct room *)rooms);
-  for(int i = 0; i < AD_NUM_ROOMS; i++)
+  for(i = 0; i < AD_NUM_ROOMS; i++)
     printRoom(rooms, i);  
 
 
