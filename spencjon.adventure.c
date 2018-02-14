@@ -194,6 +194,16 @@ void addToPath(struct path *playerPath, char *roomName){
   playerPath->pathList[playerPath->pathLength - 1] = roomName;
 }
 
+getUserInput(char **buffer, size_t *bufferSize){
+  size_t inputSize;
+  fflush(stdin);
+  inputSize = getline(buffer, bufferSize, stdin);
+  if(buffer[inputSize - 1] == '\n'){
+    buffer[inputSize -1] = '\0';
+  }
+  
+
+}
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
   int i;
@@ -204,16 +214,13 @@ void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, c
     //displayTime();
     printf("WHERE TO? >");
     buffer = malloc(bufferSize * sizeof(char));
-    fflush(stdin);
-    getline(&buffer, &bufferSize, stdin);
-    printf("UserIn: ---%s---", buffer);
+    getUserInput(&buffer, &bufferSize);
     userChoice(currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
     free(buffer);
     return;
   }
 
   for(i = 0; i < AD_NUM_ROOMS; i++){
-    printf("--%s----%s--", userIn, rooms[i].roomName);
     if(strcmp(userIn, rooms[i].roomName)) continue;
     *currentRoom = i;
     addToPath(playerPath, rooms[i].roomName);
@@ -248,9 +255,7 @@ int main(){
   //Start the game
   while(currentRoom != endRoom){
     displayCurrentLocation(rooms, currentRoom);
-    fflush(stdin);
-    getline(&buffer, &bufferSize, stdin);
-    printf("UserIn: --%s--", buffer);
+    getUserInput(&buffer, &bufferSize);
     userChoice(&currentRoom, rooms, &playerPath, buffer);
   }
 
