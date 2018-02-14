@@ -64,6 +64,7 @@ void getNewestDirectory(char directoryName[250]){
 int getFileLine(char *buff, int firstChar, FILE *fs){
   char tmp[240];
   int i;
+  fflush(stdin);
   if(!fgets(tmp, sizeof(tmp), fs)){
     return 0;
   }
@@ -134,8 +135,11 @@ void readRooms(char directoryName[250], struct room *rooms){
         fs = fopen(buff, "r");
         storeRoom(fs, rooms, i);
         i++; 
-        printf("OUT Room Num %i before close\n", i);        
-        if(fs) fclose(fs); //if the file poiinter isn't null, close it
+        printf("OUT Room Num %i before close\n", i);       
+        fflush(stdin); 
+        if(fs == NULL){
+          fclose(fs); //if the file poiinter isn't null, close it
+        }
         printf("OUT Room Num %i\n", i);
     }
     printf("OUT \n");
