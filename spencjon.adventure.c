@@ -194,15 +194,13 @@ void addToPath(struct path *playerPath, char *roomName){
   playerPath->pathList[playerPath->pathLength - 1] = roomName;
 }
 
-getUserInput(char **buffer, size_t *bufferSize){
+void getUserInput(char **buffer, size_t *bufferSize){
   size_t inputSize;
   fflush(stdin);
   inputSize = getline(buffer, bufferSize, stdin);
-  if(buffer[inputSize - 1] == '\n'){
-    buffer[inputSize -1] = '\0';
+  if(*buffer[inputSize - 1] == '\n'){
+    *buffer[inputSize -1] = '\0';
   }
-  
-
 }
 
 void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
