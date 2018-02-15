@@ -317,7 +317,7 @@ void userChoice(pthread_t *displayingTime, pthread_t *writingTime, int *currentR
 //prints the end statements and loops through the path
 void printEndOfGame(struct path *playerPath){
   int i;
-  printf("YOU HAVE FOUND THE END ROOM. CONGRATULATIONS!\n");
+  printf("\nYOU HAVE FOUND THE END ROOM. CONGRATULATIONS!\n");
   printf("YOU TOOK %i STEPS. YOUR PATH TO VICTORY WAS:\n", playerPath->pathLength);
   for(i = 0; i < playerPath->pathLength; i++){
     printf("%s\n", playerPath->pathList[i]);
