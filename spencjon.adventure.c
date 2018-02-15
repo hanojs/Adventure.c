@@ -11,7 +11,7 @@
 #include <stdio.h>  
 #include <string.h> //memset strcpy
 #include <stdlib.h> //malloc
-
+#include <time.h>
 #include <pthread.h> //multithreading
 
 
@@ -23,6 +23,8 @@
   #define AD_NAME_INITIAL 9
 #endif
 
+FILE *currentTime;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 //stores the name, type, and connections of a room
 struct room {
@@ -217,25 +219,67 @@ void getUserInput(char **buffer, size_t *bufferSize){
 }
 
 void displayTime(){
+  char buffer[250];
+  printf("\n");
+  pthread_mutex_lock(&mutex);
+  currentTime = fopen("currentTime.txt","w");
+  fgets(buffer, sizeof(buffer), currentTime);
+  printf("%s\n\n", buffer); //write the file name
+  fclose(currentTime);
+  pthread_mutex_unlock(&mutex)
+  return;
+}
 
+//Will write the time (while locking the file pointer)
+void writeTime(void *arg){
+  pthread_t *displayingTime = (pthread_t*) arg;
+  char curTime[250];
+  time_t rawtime;
+  struct tm * timeinfo;
+  
+  //Get and setup buffer to then print into the file
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
+  // 1:03pm, Tuesday, September 13, 2016 ---- Hour is space padded, and days are 0 padded
+  strftime (curTime,250,"%I:%M%p, %A, %B, %d, %G",timeinfo);
+  
+  //Lock the file and write it
+  pthread_mutex_lock(&mutex);
+  currentTime = fopen("currentTime.txt","w");
+  fprintf(currentTime, "%s", curTime); //write the file name
+  fclose(currentTime);
+  pthread_mutex_unlock(&mutex)
+
+  //Display the time written
+  pthread_create(displayingTime, NULL, displayTime, NULL); 
+  pthread_join(*displayingTime, NULL);
+
+  return;
 }
 
 
-void userChoice(int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
+void userChoice(pthread_t *displayingTime, pthread_t *writingTime, int *currentRoom, struct room *rooms, struct path *playerPath, char *userIn){
   int i, flag = 0;
   char *buffer;
   size_t bufferSize = 32;
 
   //print time...
+
+  /***********************************************
+   * PTHREAD CREAT / JOINs 
+   * MUTEX is above in both WriteTime() and Displaytime()
+   * *******************************************/
   if(!strcmp(userIn, "time")){
-    pthread_create(&timeThread, NULL, displayTime, NULL);
-    pthread_join
+
+    pthread_create(writingTime, NULL, writeTime, displayingTime);
+    pthread_join(*writingTime, NULL);   
+    free(buffer); //clean up before we get user input again
+
     printf("WHERE TO? >");
     buffer = malloc(bufferSize * sizeof(char));
     getUserInput(&buffer, &bufferSize);
     userChoice(currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
-    free(buffer);
-    return;
+    return;//main will free buffer, or another instance of this option will.
   }
 
   //test if the asked for room is in the list of connections
@@ -276,7 +320,8 @@ int main(){
   char directoryName[250];
   char *buffer;
   size_t bufferSize = 32;
-  pthread_t myThreadID;
+  pthread_t writingTime;
+  pthread_t displayingTime;
   struct room rooms[AD_NUM_ROOMS];
   struct path playerPath;
 
@@ -299,8 +344,8 @@ int main(){
   while(currentRoom != endRoom){
     displayCurrentLocation(rooms, currentRoom);
     getUserInput(&buffer, &bufferSize);
-    userChoice(&currentRoom, rooms, &playerPath, buffer);
-    free(buffer); //clean up buffer
+    userChoice(&displayingTime, &writingTime, &currentRoom, rooms, &playerPath, buffer);
+    if(*buffer) free(buffer); //clean up buffer
   }
 
   //end the game
