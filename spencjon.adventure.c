@@ -224,7 +224,7 @@ void* displayTime(){
   char buffer[250];
   printf("\n");
   pthread_mutex_lock(&mutex);
-  currentTime = fopen("currentTime.txt","w");
+  currentTime = fopen("currentTime.txt","r");
   fgets(buffer, sizeof(buffer), currentTime);
   printf("%s\n\n", buffer); //write the file name
   fclose(currentTime);
