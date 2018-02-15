@@ -164,7 +164,7 @@ void readRooms(char directoryName[250], struct room *rooms){
 void displayCurrentLocation(struct room *rooms, int i){
   int j = 0;
   fflush(stdout);
-  printf("CURRENT LOCATION: %s\n", rooms[i].roomName);
+  printf("\nCURRENT LOCATION: %s\n", rooms[i].roomName);
 
   //POSSIBLE CONNECTIONS: PLOVER, Dungeon, twisty.
   printf("POSSIBLE CONNECTIONS: %s", rooms[i].connections[j]);
@@ -310,7 +310,7 @@ void userChoice(pthread_t *displayingTime, pthread_t *writingTime, int *currentR
   }
 
   //if not time or a connected room...
-  printf("\nHUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n\n");
+  printf("\nHUH? I DON’T UNDERSTAND THAT ROOM. TRY AGAIN.\n");
 }
 
 
