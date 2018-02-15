@@ -183,6 +183,8 @@ int getRoomByType(struct room *rooms, char *type){
 
   return 999;
 }
+
+
 void addToPath(struct path *playerPath, char *roomName){
   char **tmpPath;
   int i = 0;
@@ -242,7 +244,8 @@ void* writeTime(void *arg){
   timeinfo = localtime(&rawtime);
   // 1:03pm, Tuesday, September 13, 2016 ---- Hour is space padded, and days are 0 padded
   strftime (curTime,250,"%I:%M%p, %A, %B, %d, %G",timeinfo);
-  
+  printf("CURRENT TIME WRITING %s\n", curTime);
+
   //Lock the file and write it
   pthread_mutex_lock(&mutex);
   currentTime = fopen("currentTime.txt","w");
@@ -283,7 +286,7 @@ void userChoice(pthread_t *displayingTime, pthread_t *writingTime, int *currentR
   }
 
   //test if the asked for room is in the list of connections
-  for(i = 0; i < rooms[i].numCon; i++){
+  for(i = 0; i < rooms[*currentRoom].numCon; i++){
     if(strcmp(userIn, rooms[*currentRoom].connections[i])) continue;
     flag = 1;
     break;
