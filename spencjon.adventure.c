@@ -152,7 +152,7 @@ void readRooms(char directoryName[250], struct room *rooms){
         storeRoom(fs, rooms, i);
         i++; 
         fflush(stdin); //Got rid of occasional errors with stdin corrupting the fclose 
-        if(fs != NULL){
+        if(fs == NULL){
           fclose(fs); 
         }
     }
