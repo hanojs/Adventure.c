@@ -218,7 +218,7 @@ void getUserInput(char **buffer, size_t *bufferSize){
   *buffer = tmpBuffer;
 }
 
-void displayTime(){
+void* displayTime(){
   char buffer[250];
   printf("\n");
   pthread_mutex_lock(&mutex);
@@ -226,12 +226,12 @@ void displayTime(){
   fgets(buffer, sizeof(buffer), currentTime);
   printf("%s\n\n", buffer); //write the file name
   fclose(currentTime);
-  pthread_mutex_unlock(&mutex)
+  pthread_mutex_unlock(&mutex);
   return;
 }
 
 //Will write the time (while locking the file pointer)
-void writeTime(void *arg){
+void* writeTime(void *arg){
   pthread_t *displayingTime = (pthread_t*) arg;
   char curTime[250];
   time_t rawtime;
@@ -248,7 +248,7 @@ void writeTime(void *arg){
   currentTime = fopen("currentTime.txt","w");
   fprintf(currentTime, "%s", curTime); //write the file name
   fclose(currentTime);
-  pthread_mutex_unlock(&mutex)
+  pthread_mutex_unlock(&mutex);
 
   //Display the time written
   pthread_create(displayingTime, NULL, displayTime, NULL); 
@@ -278,7 +278,7 @@ void userChoice(pthread_t *displayingTime, pthread_t *writingTime, int *currentR
     printf("WHERE TO? >");
     buffer = malloc(bufferSize * sizeof(char));
     getUserInput(&buffer, &bufferSize);
-    userChoice(currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
+    userChoice(displayingTime, writingTime, currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
     return;//main will free buffer, or another instance of this option will.
   }
 
