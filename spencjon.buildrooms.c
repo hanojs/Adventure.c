@@ -75,7 +75,7 @@ int graphFull(struct roomConnect roomCon[BR_NUM_ROOMS]){
   return 1;
 }
 
-//Returns 1 if it exists, and 0 if not
+//Returns 1 if a connection between two rooms exists, and 0 if not
 int connectionAlreadyExists(struct roomConnect roomA, int roomB){
   int i;
   for(i = 0; i < BR_MAX_CONN; i++) //test every connection or A to see if B is in there. 
@@ -108,7 +108,8 @@ void connectRooms(struct roomConnect roomCon[BR_NUM_ROOMS], int roomA, int roomB
 }
 
 
-//Adds one random connection
+//Adds one random connection -> after each connection, the graph is tested and we see if we need to add another.
+//more than one may work; however, it is uneccesary 
 void addAConnecetion( struct roomConnect roomCon[BR_NUM_ROOMS]){
   int i, rndRoomA, rndRoomB;
 
@@ -164,7 +165,7 @@ void writeRooms(struct roomConnect roomCon[BR_NUM_ROOMS], char *rooms[BR_MAX_NAM
 
 
 int main(){
-    int pid = getpid(); //gets the process id for
+    int pid = getpid(); //gets the process id for use in the dirname
     int i = 0;
     FILE *fs;
 
@@ -172,21 +173,24 @@ int main(){
     char directoryName[(BR_DIR_MAX+1)]; //the final dirName
 
     struct roomConnect roomCon[BR_NUM_ROOMS];
-    for(i = 0; i < BR_NUM_ROOMS; i++){ //Set all the connections to -1 for
+    for(i = 0; i < BR_NUM_ROOMS; i++){ //Set all the connections to -1 for when we add connections; it tests to see if we can add connections be looking for != -1
       memset(roomCon[i].con, -1, sizeof(int) * BR_MAX_CONN);
       roomCon[i].numCon = 0;
     }
 
+    //list of names that we will point to when writing connections and what not. We aren't copying the whole sting everytime, but instead just poiinting to one of these char arrays
     const char *names[BR_NUM_NAMES] = {"Lounge", "Library", "Dungeon", "Bed", "Cave", "Box", "HotTub", "Cannery", "Stable", "Webs"}; //this has to be updated whenever numNames changes
 
+    //we need to make this dirname with snprintf first because mkdir won't allow multiple arguments
     snprintf(directoryName, BR_DIR_MAX + 1, "spencjon.rooms.%d", pid); //Create the dirctory name with the process id
     mkdir(directoryName, 0755);
 
+    //Creates the rooms -> I cast these rooms so that passing them was easier and more uniform. 
     createRooms((char **)rooms, (char **)names, directoryName); //initializes the rooms with their names and places them in the directory made earlier
 
     while(!graphFull(roomCon)){ //until all rooms have at least 3 connections...
       addAConnecetion(roomCon); //add another connection
-    }
+    }//to fill the rooms until thegraph is full
 
     writeRooms(roomCon, (char **)rooms, directoryName); //writes the connections and room types to the room files in the directory
 
