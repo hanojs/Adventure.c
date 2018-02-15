@@ -8,9 +8,6 @@
 *   and all the room connections will be two-ways
 *************************************/
 
-//Debug statements https://stackoverflow.com/questions/1644868/c-define-macro-for-debug-printing
-
-
 #include <stdio.h> // file stuffs
 #include <sys/types.h> // pid
 #include <unistd.h> // pid

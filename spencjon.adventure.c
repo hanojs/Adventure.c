@@ -1,5 +1,5 @@
 /*************************************
-*
+*PTHREAD CREATION IN USER
 *
 *
 *
@@ -248,8 +248,9 @@ void* writeTime(void *arg){
 
   //Lock the file and write it
   pthread_mutex_lock(&mutex);
-  currentTime = fopen("currentTime.txt","w");
+  currentTime = fopen("currentTime.txt","w+");
   fprintf(currentTime, "%s", curTime); //write the file name
+  printf("CURRENT TIME WRITING %s\n", curTime);
   fclose(currentTime);
   pthread_mutex_unlock(&mutex);
 
@@ -270,7 +271,7 @@ void userChoice(pthread_t *displayingTime, pthread_t *writingTime, int *currentR
 
   /***********************************************
    * PTHREAD CREAT / JOINs 
-   * MUTEX is above in both WriteTime() and Displaytime()
+   * MUTEXs are in the 2 functions directly above -- WriteTime() and Displaytime()
    * *******************************************/
   if(!strcmp(userIn, "time")){
 
