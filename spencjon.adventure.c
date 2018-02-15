@@ -1,8 +1,7 @@
 /*************************************
-*PTHREAD CREATION IN USER
-*
-*
-*
+*PTHREAD CREATION IN LINE: 285, 265
+*MUTEX LOCK IN LINE:       258, 235
+*MUTEX UNLOCKS ARE A FEW LINES UNDER EACH LOCK
 ************************************/
 #include <sys/types.h>  
 #include <sys/stat.h> //pid
@@ -41,12 +40,13 @@ struct path {
   int pathSize;
 };
 
+//gets the newest directory (that isn't the current dir or parent dirs)
 void getNewestDirectory(char directoryName[250]){
     DIR *directoryPointer = opendir(".");
     struct stat dirStat;
     struct dirent *direntPointer;
     time_t latest = 0;
-    direntPointer = readdir(directoryPointer);
+    direntPointer = readdir(directoryPointer); 
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are more directories or files
         memset(&dirStat, 0, sizeof(dirStat)); //allocate the memorY
 
@@ -72,6 +72,7 @@ void getNewestDirectory(char directoryName[250]){
     //printf("Final Directory name: %s \n", directoryName);
 }
 
+//Gets a line from a file for storeRoom
 int getFileLine(char *buff, int firstChar, FILE *fs){
   char tmp[240];
   int i;
@@ -80,35 +81,34 @@ int getFileLine(char *buff, int firstChar, FILE *fs){
     return 0;
   }
 
-  if(tmp[5] == 'T'){
+  if(tmp[5] == 'T'){ //if the file line is reading Room Type, you copy over the 11th and after chars
     firstChar = 11;
   }
 
-  memcpy(buff, &tmp[firstChar], sizeof(tmp));
+  memcpy(buff, &tmp[firstChar], sizeof(tmp)); //copy over the specified chars
 
   i = 0;
-  while(buff[i]){
+  while(buff[i]){ //remove all newlines
     if(buff[i]=='\n')
       buff[i]='\0';
     i++;
   }
 
-  if(tmp[5] == 'T'){
+  if(tmp[5] == 'T'){ //if the room tpye was read, that was the last line and return 0
     return 0;
   }
   
-  return 1;
+  return 1; //if it wasn't the room type return 1
 }
 
 
-
+//Copys the room name, connections, and toom type to a specified room struct
 void storeRoom(FILE *fs, struct room *rooms, int roomNum){
     int i = 0;
     char *buff = malloc(100 * sizeof(char));
     char *name = malloc(20 * sizeof(char));
     size_t nSize = sizeof(buff);
     //Read/store the room name
-
     getFileLine(buff, 11, fs);
     memcpy(rooms[roomNum].roomName, buff, sizeof(rooms[roomNum].roomName));
     //printf("ROOM NAME: %s\n", buff);
@@ -141,22 +141,26 @@ void readRooms(char directoryName[250], struct room *rooms){
     struct dirent *direntPointer;
     //printf("Directory Name: %s\n", directoryName);
     while ((direntPointer = readdir(directoryPointer)) != NULL) { //while there are files
+        //skip if the directory name is the current directory or any previous for linux
         if(direntPointer->d_name[0] == '.'){
           continue;
         }
+        //create the file path
         snprintf( buff, sizeof( buff ) - 1, "./%s/%s", directoryName, direntPointer->d_name);
+        //open the file and store the room
         fs = fopen(buff, "r");
         storeRoom(fs, rooms, i);
         i++; 
-        fflush(stdin); 
-        if(fs == NULL){
-          fclose(fs); //if the file poiinter isn't null, close it
+        fflush(stdin); //Got rid of occasional errors with stdin corrupting the fclose 
+        if(fs != NULL){
+          fclose(fs); 
         }
     }
     closedir(directoryPointer);
     return;
 }
 
+//prints the current location, and connected rooms. Also asks "Where to"
 void displayCurrentLocation(struct room *rooms, int i){
   int j = 0;
   fflush(stdout);
@@ -173,32 +177,33 @@ void displayCurrentLocation(struct room *rooms, int i){
   printf("WHERE TO? >");
 }
 
+//Returns the room number (0-6) that contains the room type given in the second arg
 int getRoomByType(struct room *rooms, char *type){
   int i;
-
+  //go through each until the room is found
   for(i = 0; i < AD_NUM_ROOMS; i++){
-    if(strcmp(rooms[i].roomType, type)) continue;
+    if(strcmp(rooms[i].roomType, type)) continue; //continues searching if strings aren't equal
     return i;
   }
 
-  return 999;
+  return 1;
 }
 
 
 void addToPath(struct path *playerPath, char *roomName){
   char **tmpPath;
   int i = 0;
-  playerPath->pathLength++;
+  playerPath->pathLength++; //A thing was added...
 
   //if the path is longer or equal to the path we've already allocated, double it and free the old one 
   if(playerPath->pathLength >= playerPath->pathSize){
-    playerPath->pathSize = 2 * playerPath->pathSize;
-    tmpPath = malloc(sizeof(char*) * playerPath->pathSize);
-    for(i = 0; i < playerPath->pathSize; i++){
+    playerPath->pathSize = 2 * playerPath->pathSize; //double the space in the path
+    tmpPath = malloc(sizeof(char*) * playerPath->pathSize); 
+    for(i = 0; i < playerPath->pathSize; i++){ //copy the old list to the new one with more space
       tmpPath[i] = playerPath->pathList[i];
     }
-    free(playerPath->pathList);
-    playerPath->pathList = tmpPath;
+    free(playerPath->pathList); //clean the old one
+    playerPath->pathList = tmpPath; //the OG gets the new path
   }
 
   playerPath->pathList[playerPath->pathLength - 1] = roomName;
@@ -211,24 +216,27 @@ void getUserInput(char **buffer, size_t *bufferSize){
   fflush(stdin); //user input 1/10 times would get corrupted by the stdin buffer not being clear
   getline(&tmpBuffer, bufferSize, stdin);
   i = 0;
+  //go through the entire buffer and replace newlines with NULL
   while(i < *bufferSize){
     //printf("%i %c\n", i,tmpBuffer[i]);
     if(tmpBuffer[i]=='\n')
       tmpBuffer[i]='\0';
     i++;
   }
+  //the tmpBuffer becomes the OG buffer
   *buffer = tmpBuffer;
 }
 
+//Prints an extra newline, and the time, then two more newlines
 void* displayTime(){
   char buffer[250];
   printf("\n");
-  pthread_mutex_lock(&mutex);
+  pthread_mutex_lock(&mutex); //LOCK the file
   currentTime = fopen("currentTime.txt","r");
   fgets(buffer, sizeof(buffer), currentTime);
   printf("%s\n\n", buffer); //write the file name
   fclose(currentTime);
-  pthread_mutex_unlock(&mutex);
+  pthread_mutex_unlock(&mutex);//unlock the file
   return;
 }
 
@@ -277,8 +285,8 @@ void userChoice(pthread_t *displayingTime, pthread_t *writingTime, int *currentR
     pthread_join(*writingTime, NULL);   
     free(buffer); //clean up before we get user input again
 
+    //Re-Print the where to, get user input, and then run userChoice again
     printf("WHERE TO? >");
-    buffer = malloc(bufferSize * sizeof(char));
     getUserInput(&buffer, &bufferSize);
     userChoice(displayingTime, writingTime, currentRoom, rooms, playerPath, buffer); //nested so that the vurrent locations doesn't play again.
     return;//main will free buffer, or another instance of this option will.
@@ -319,13 +327,13 @@ void printEndOfGame(struct path *playerPath){
 
 int main(){
   int i, currentRoom, endRoom;
-  char directoryName[250];
-  char *buffer;
-  size_t bufferSize = 32;
-  pthread_t writingTime;
-  pthread_t displayingTime;
-  struct room rooms[AD_NUM_ROOMS];
-  struct path playerPath;
+  char directoryName[250]; //buffer for the directory name that was last created
+  char *buffer; //buffer is a dynamic array. Memory is allocated in 
+  size_t bufferSize = 32; 
+  pthread_t writingTime; //will be used later to create threads
+  pthread_t displayingTime; 
+  struct room rooms[AD_NUM_ROOMS]; //list of rooms
+  struct path playerPath; //holds the path
 
 
   //setup the initial path to have nothing in it. 
@@ -347,7 +355,7 @@ int main(){
     displayCurrentLocation(rooms, currentRoom);
     getUserInput(&buffer, &bufferSize);
     userChoice(&displayingTime, &writingTime, &currentRoom, rooms, &playerPath, buffer);
-    if(*buffer) free(buffer); //clean up buffer
+    free(buffer); //clean up buffer
   }
 
   //end the game

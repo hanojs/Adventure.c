@@ -66,6 +66,7 @@ void createRooms(char *rooms[BR_MAX_NAME_SIZE + 1], char *names[BR_MAX_NAME_SIZE
     return;
 }
 
+//TEsts if the graph has fullfilled the requirements. At least one room will always have only 3 connections
 int graphFull(struct roomConnect roomCon[BR_NUM_ROOMS]){
   int i;
   for(i = 0; i < BR_NUM_ROOMS; i++)
@@ -74,17 +75,20 @@ int graphFull(struct roomConnect roomCon[BR_NUM_ROOMS]){
   return 1;
 }
 
+//Returns 1 if it exists, and 0 if not
 int connectionAlreadyExists(struct roomConnect roomA, int roomB){
   int i;
-  for(i = 0; i < BR_MAX_CONN; i++)
-    if(roomA.con[i] == roomB)
+  for(i = 0; i < BR_MAX_CONN; i++) //test every connection or A to see if B is in there. 
+    if(roomA.con[i] == roomB)      // This works because all connections are reciprocal
         return 1;
   return 0;
 }
 
+//Connects the specified rooms by tagging on the other room to the next avalibale spot on each's list
 void connectRooms(struct roomConnect roomCon[BR_NUM_ROOMS], int roomA, int roomB){
   int i;
 
+  //Adds Room B to Room A connecton
   for(i = 0; i < BR_MAX_CONN; i++)
     if(roomCon[roomA].con[i] == -1){
       roomCon[roomA].con[i] = roomB;
@@ -92,6 +96,7 @@ void connectRooms(struct roomConnect roomCon[BR_NUM_ROOMS], int roomA, int roomB
       break;
     }
 
+  //Adds Room A to Room B Connection
   for(i = 0; i < BR_MAX_CONN; i++)
     if(roomCon[roomB].con[i] == -1){
       roomCon[roomB].con[i] = roomA;
