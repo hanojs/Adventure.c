@@ -244,13 +244,11 @@ void* writeTime(void *arg){
   timeinfo = localtime(&rawtime);
   // 1:03pm, Tuesday, September 13, 2016 ---- Hour is space padded, and days are 0 padded
   strftime (curTime,250,"%I:%M%p, %A, %B, %d, %G",timeinfo);
-  printf("CURRENT TIME WRITING %s\n", curTime);
 
   //Lock the file and write it
   pthread_mutex_lock(&mutex);
   currentTime = fopen("currentTime.txt","w+");
   fprintf(currentTime, "%s", curTime); //write the file name
-  printf("CURRENT TIME WRITING %s\n", curTime);
   fclose(currentTime);
   pthread_mutex_unlock(&mutex);
 
